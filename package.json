@@ -1,0 +1,23 @@
+{
+  "name": "salesperson-queue",
+  "version": "1.0.0",
+  "description": "to-do",
+  "main": "main.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jackson-lenhart/salesperson-queue.git"
+  },
+  "keywords": [
+    "priority",
+    "queue"
+  ],
+  "author": "jackson-lenhart",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jackson-lenhart/salesperson-queue/issues"
+  },
+  "homepage": "https://github.com/jackson-lenhart/salesperson-queue"
+}
