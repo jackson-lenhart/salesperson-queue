@@ -1,7 +1,9 @@
 import React from "react";
 import { render } from "react-dom";
+import shortid from "shortid";
 
 import AddForm from "./add-form";
+import Queue from "./queue";
 
 class Main extends React.Component {
   constructor() {
@@ -17,7 +19,10 @@ class Main extends React.Component {
 
   addToQueue() {
     this.setState({
-      salespeople: this.state.salespeople.concat(this.state.name),
+      salespeople: this.state.salespeople.concat({
+        name: this.state.name,
+        id: shortid.generate()
+      }),
       name: ""
     });
   }
@@ -35,6 +40,7 @@ class Main extends React.Component {
           addToQueue={this.addToQueue}
           handleInput={this.handleInput}
         />
+        <Queue salespeople={this.state.salespeople} />
       </div>
     );
   }
