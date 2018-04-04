@@ -50,7 +50,7 @@ class Main extends React.Component {
           removeFromQueue=this.removeFromQueue
           handleInput={this.handleInput}
         />
-        <Queue salespeople={this.state.salespeople} />
+        <Queue queue={this.state.queue} />
       </div>
     );
   }

@@ -5,10 +5,10 @@ import Salesperson from "./salesperson";
 class Queue extends React.Component {
   render() {
     let queue;
-    this.props.salespeople.length === 0 ?
+    this.props.queue.length === 0 ?
       queue = (
         <p>None in queue.</p>
-      ) : queue = this.props.salespeople.map(x =>
+      ) : queue = this.props.queue.map(x =>
         <Salesperson key={x.id} name={x.name} />
       );
 
