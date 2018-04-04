@@ -9,21 +9,30 @@ class Main extends React.Component {
   constructor() {
     super();
     this.state = {
-      salespeople: [],
+      queue: [],
       name: ""
     };
 
     this.addToQueue = this.addToQueue.bind(this);
+    this.removeFromQueue = this.removeFromQueue.bind(this);
     this.handleInput = this.handleInput.bind(this);
   }
 
   addToQueue() {
     this.setState({
-      salespeople: this.state.salespeople.concat({
+      queue: this.state.queue.concat({
         name: this.state.name,
         id: shortid.generate()
       }),
       name: ""
+    });
+  }
+
+  removeFromQueue(name) {
+    this.setState({
+      queue: this.state.queue.filter(x =>
+        x.name !== name
+      )
     });
   }
 
@@ -38,6 +47,7 @@ class Main extends React.Component {
       <div>
         <AddForm
           addToQueue={this.addToQueue}
+          removeFromQueue=this.removeFromQueue
           handleInput={this.handleInput}
         />
         <Queue salespeople={this.state.salespeople} />
