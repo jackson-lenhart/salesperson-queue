@@ -4,7 +4,8 @@
   "description": "to-do",
   "main": "main.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start": "webpack-dev-server"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
     "webpack": "^4.4.1",
+    "webpack-cli": "^2.0.13",
     "webpack-dev-server": "^3.1.1"
   }
 }
