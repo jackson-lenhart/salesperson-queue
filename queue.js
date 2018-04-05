@@ -9,7 +9,11 @@ class Queue extends React.Component {
       queue = (
         <p>None in queue.</p>
       ) : queue = this.props.queue.map(x =>
-        <Salesperson key={x.id} name={x.name} />
+        <Salesperson
+          key={x.id}
+          name={x.name}
+          removeFromQueue={this.props.removeFromQueue}
+        />
       );
 
     return (

@@ -10,7 +10,7 @@ class Main extends React.Component {
     super();
     this.state = {
       queue: [],
-      name: ""
+      currName: ""
     };
 
     this.addToQueue = this.addToQueue.bind(this);
@@ -18,13 +18,13 @@ class Main extends React.Component {
     this.handleInput = this.handleInput.bind(this);
   }
 
-  addToQueue() {
+  addToQueue(name) {
     this.setState({
       queue: this.state.queue.concat({
-        name: this.state.name,
+        name: name,
         id: shortid.generate()
       }),
-      name: ""
+      currName: ""
     });
   }
 
@@ -38,7 +38,7 @@ class Main extends React.Component {
 
   handleInput(event) {
     this.setState({
-      name: event.target.value
+      currName: event.target.value
     });
   }
 
@@ -47,10 +47,13 @@ class Main extends React.Component {
       <div>
         <AddForm
           addToQueue={this.addToQueue}
-          removeFromQueue=this.removeFromQueue
           handleInput={this.handleInput}
+          currName={this.state.currName}
         />
-        <Queue queue={this.state.queue} />
+        <Queue
+          queue={this.state.queue}
+          removeFromQueue={this.removeFromQueue}
+        />
       </div>
     );
   }

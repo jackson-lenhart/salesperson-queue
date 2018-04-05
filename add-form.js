@@ -4,11 +4,25 @@ import AddInput from "./add-input";
 import AddButton from "./add-button";
 
 class AddForm extends React.Component {
+  constructor() {
+    super();
+    this.clickWrapper = this.clickWrapper.bind(this);
+  }
+
+  clickWrapper() {
+    this.props.addToQueue(this.props.currName);
+  }
+
   render() {
     return (
       <div>
-        <AddInput handleInput={this.props.handleInput} />
-        <AddButton addToQueue={this.props.addToQueue} />
+        <input
+          type="text"
+          onChange={this.props.handleInput}
+        />
+        <button onClick={this.clickWrapper}>
+          <strong>Add To Queue</strong>
+        </button>
       </div>
     );
   }
