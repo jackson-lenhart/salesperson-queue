@@ -8,6 +8,9 @@ class Salesperson extends React.Component {
     const style = {
       name: {
         padding: "10px"
+      },
+      button: {
+        padding: "5px"
       }
     };
 
@@ -17,10 +20,12 @@ class Salesperson extends React.Component {
         <HelpedButton
           moveToBottom={this.props.moveToBottom}
           id={this.props.id}
+          style={style.button}
         />
         <DeleteButton
           removeFromQueue={this.props.removeFromQueue}
           name={this.props.name}
+          style={style.button}
         />
       </div>
     );

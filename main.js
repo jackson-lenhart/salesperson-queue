@@ -44,7 +44,6 @@ class Main extends React.Component {
       x.id !== id
     );
     queue.push(salespersonToMove);
-    console.log("QUEUE", queue);
     this.setState({ queue });
   }
 
