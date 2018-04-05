@@ -23,8 +23,7 @@ class Main extends React.Component {
       queue: this.state.queue.concat({
         name: name,
         id: shortid.generate()
-      }),
-      currName: ""
+      })
     });
   }
 
