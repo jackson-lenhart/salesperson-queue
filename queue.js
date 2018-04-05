@@ -21,8 +21,10 @@ class Queue extends React.Component {
         <div key={x.id} style={style.item}>
           <Salesperson
             key={x.id}
+            id={x.id}
             name={x.name}
             removeFromQueue={this.props.removeFromQueue}
+            moveToBottom={this.props.moveToBottom}
           />
         </div>
       );

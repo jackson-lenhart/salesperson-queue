@@ -16,6 +16,7 @@ class Main extends React.Component {
     this.addToQueue = this.addToQueue.bind(this);
     this.removeFromQueue = this.removeFromQueue.bind(this);
     this.handleInput = this.handleInput.bind(this);
+    this.moveToBottom = this.moveToBottom.bind(this);
   }
 
   addToQueue(name) {
@@ -35,6 +36,18 @@ class Main extends React.Component {
     });
   }
 
+  moveToBottom(id) {
+    let salespersonToMove = this.state.queue.filter(x =>
+      x.id === id
+    )[0];
+    let queue = this.state.queue.filter(x =>
+      x.id !== id
+    );
+    queue.push(salespersonToMove);
+    console.log("QUEUE", queue);
+    this.setState({ queue });
+  }
+
   handleInput(event) {
     this.setState({
       currName: event.target.value
@@ -52,6 +65,7 @@ class Main extends React.Component {
         <Queue
           queue={this.state.queue}
           removeFromQueue={this.removeFromQueue}
+          moveToBottom={this.moveToBottom}
         />
       </div>
     );
