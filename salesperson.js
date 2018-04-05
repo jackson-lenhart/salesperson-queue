@@ -6,7 +6,7 @@ class Salesperson extends React.Component {
   render() {
     return (
       <div>
-        <p>{this.props.name}</p>
+        <span>{this.props.name}</span>
         <DeleteButton
           removeFromQueue={this.props.removeFromQueue}
           name={this.props.name}

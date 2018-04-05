@@ -1,8 +1,5 @@
 import React from "react";
 
-import AddInput from "./add-input";
-import AddButton from "./add-button";
-
 class AddForm extends React.Component {
   constructor() {
     super();
