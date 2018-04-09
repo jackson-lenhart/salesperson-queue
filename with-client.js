@@ -2,22 +2,22 @@ import React from "react";
 
 import Salesperson from "./salesperson";
 
-class Queue extends React.Component {
+class WithClient extends React.Component {
   render() {
     const style = {
       item: {
         padding: "10px"
       },
-      queue: {
+      withClient: {
         padding: "20px"
       }
     };
 
-    let queue;
-    this.props.queue.length === 0 ?
-      queue = (
-        <p>None in queue.</p>
-      ) : queue = this.props.queue.map(x =>
+    let withClient;
+    this.props.withClient.length === 0 ?
+      withClient = (
+        <p>None with clients.</p>
+      ) : withClient = this.props.withClient.map(x =>
         <div key={x.id} style={style.item}>
           <Salesperson
             key={x.id}
@@ -30,12 +30,12 @@ class Queue extends React.Component {
       );
 
     return (
-      <div style={style.queue}>
-        <h1>Available</h1>
-        {queue}
+      <div style={style.withClient}>
+        <h1>With Client</h1>
+        {withClient}
       </div>
     );
   }
 }
 
-export default Queue;
+export default WithClient;

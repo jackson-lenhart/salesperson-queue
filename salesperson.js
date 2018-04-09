@@ -18,7 +18,7 @@ class Salesperson extends React.Component {
       <div>
         <span style={style.name}>{this.props.name}</span>
         <HelpedButton
-          moveToBottom={this.props.moveToBottom}
+          move={this.props.move}
           id={this.props.id}
           style={style.button}
         />
