@@ -3,7 +3,7 @@ import { render } from "react-dom";
 import shortid from "shortid";
 
 import AddForm from "./add-form";
-import Queue from "./queue";
+import Available from "./available";
 import WithClient from "./with-client";
 
 class Main extends React.Component {
@@ -11,8 +11,6 @@ class Main extends React.Component {
     super();
     this.state = {
       queue: [],
-      withClient: [],
-      unavailable: [],
       currName: ""
     };
 
@@ -26,7 +24,8 @@ class Main extends React.Component {
     this.setState({
       queue: this.state.queue.concat({
         name: name,
-        id: shortid.generate()
+        id: shortid.generate(),
+        status: "available"
       })
     });
   }
@@ -39,11 +38,14 @@ class Main extends React.Component {
     });
   }
 
-  move(id, from, to) {
-    let salespersonToMove = this.state[from].find(x => x.id === id);
+  move(id, to) {
     this.setState({
-      [from]: this.state[from].filter(x => x.id !== id),
-      [to]: this.state[to].concat(salespersonToMove)
+      queue: this.state.queue.map(x => {
+        if (x.id === id) {
+          return Object.assign(x, { status: to });
+        }
+        return x;
+      })
     });
   }
 
@@ -61,13 +63,13 @@ class Main extends React.Component {
           handleInput={this.handleInput}
           currName={this.state.currName}
         />
-        <Queue
-          queue={this.state.queue}
+        <Available
+          available={this.state.queue.filter(x => x.status === "available")}
           move={this.move}
           removeFromQueue={this.removeFromQueue}
         />
         <WithClient
-          withClient={this.state.withClient}
+          withClient={this.state.queue.filter(x => x.status === "withClient")}
           move={this.move}
           removeFromQueue={this.removeFromQueue}
         />

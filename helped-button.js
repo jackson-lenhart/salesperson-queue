@@ -7,7 +7,7 @@ class HelpedButton extends React.Component {
   }
 
   clickWrapper() {
-    this.props.move(this.props.id, "queue", "withClient");
+    this.props.move(this.props.id, "withClient");
   }
 
   render() {
