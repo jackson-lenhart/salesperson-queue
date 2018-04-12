@@ -51,7 +51,7 @@ class Main extends React.Component {
   move(id, from, to) {
     this.setState(prevState => {
       let newQueue = deepCopy(prevState.queue);
-      let temp = newQueue[from].find(x => x.id === x.id);
+      let temp = newQueue[from].find(x => x.id === id);
       newQueue[from] = prevState.queue[from].filter(x =>
         x.id !== id
       );
