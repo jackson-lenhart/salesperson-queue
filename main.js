@@ -1,6 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 import shortid from "shortid";
+import deepCopy from "deep-copy";
 
 import AddForm from "./add-form";
 import Available from "./available";
@@ -10,7 +11,11 @@ class Main extends React.Component {
   constructor() {
     super();
     this.state = {
-      queue: [],
+      queue: {
+        available: [],
+        withClient: [],
+        unavailable: []
+      },
       currName: ""
     };
 
@@ -21,31 +26,39 @@ class Main extends React.Component {
   }
 
   addToQueue(name) {
+    let newQueue = deepCopy(this.state.queue);
+    newQueue.available = this.state.queue.available.concat({
+      name,
+      id: shortid.generate()
+    });
     this.setState({
-      queue: this.state.queue.concat({
-        name: name,
-        id: shortid.generate(),
-        status: "available"
-      })
+      queue: newQueue
     });
   }
 
-  removeFromQueue(name) {
+  removeFromQueue(id) {
+    let newQueue = deepCopy(this.state.queue);
+    for (let k in this.state.queue) {
+      newQueue[k] = this.state.queue[k].filter(x =>
+        x.id !== id
+      );
+    }
     this.setState({
-      queue: this.state.queue.filter(x =>
-        x.name !== name
-      )
+      queue: newQueue
     });
   }
 
-  move(id, to) {
-    this.setState({
-      queue: this.state.queue.map(x => {
-        if (x.id === id) {
-          return Object.assign(x, { status: to });
-        }
-        return x;
-      })
+  move(id, from, to) {
+    this.setState(prevState => {
+      let newQueue = deepCopy(prevState.queue);
+      let temp = newQueue[from].find(x => x.id === x.id);
+      newQueue[from] = prevState.queue[from].filter(x =>
+        x.id !== id
+      );
+      newQueue[to] = prevState.queue[to].concat(temp);
+      return {
+        queue: newQueue
+      };
     });
   }
 
@@ -64,12 +77,12 @@ class Main extends React.Component {
           currName={this.state.currName}
         />
         <Available
-          available={this.state.queue.filter(x => x.status === "available")}
+          available={this.state.queue.available}
           move={this.move}
           removeFromQueue={this.removeFromQueue}
         />
         <WithClient
-          withClient={this.state.queue.filter(x => x.status === "withClient")}
+          withClient={this.state.queue.withClient}
           move={this.move}
           removeFromQueue={this.removeFromQueue}
         />

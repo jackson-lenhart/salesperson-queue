@@ -5,7 +5,7 @@ class DeleteButton extends React.Component {
     return (
       <span style={this.props.style}>
         <button onClick={() =>
-          this.props.removeFromQueue(this.props.name)
+          this.props.removeFromQueue(this.props.id)
         }>Delete</button>
       </span>
     );

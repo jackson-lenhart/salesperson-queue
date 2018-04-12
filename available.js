@@ -25,6 +25,7 @@ class Available extends React.Component {
             name={x.name}
             move={this.props.move}
             removeFromQueue={this.props.removeFromQueue}
+            parent={"available"}
           />
         </div>
       );
