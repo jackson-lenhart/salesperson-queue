@@ -8,4 +8,6 @@ Install on your local machine: cd into directory and run: `npm install`
 
 Start development server: `npm start`
 
+Runs on port 8080
+
 To keep track of each individual salesperson's availability at any given time
