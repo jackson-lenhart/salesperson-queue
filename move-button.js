@@ -1,24 +1,24 @@
 import React from "react";
 
-class HelpedButton extends React.Component {
+class MoveButton extends React.Component {
   constructor() {
     super();
     this.clickWrapper = this.clickWrapper.bind(this);
   }
 
   clickWrapper() {
-    this.props.move(this.props.id, "available", "withClient");
+    this.props.move(this.props.id, this.props.from, this.props.to);
   }
 
   render() {
     return (
       <span style={this.props.style}>
         <button onClick={this.clickWrapper}>
-          <strong>Helped A Customer</strong>
+          <strong>{this.props.msg}</strong>
         </button>
       </span>
     );
   }
 }
 
-export default HelpedButton;
+export default MoveButton;

@@ -25,7 +25,9 @@ class WithClient extends React.Component {
             name={x.name}
             removeFromQueue={this.props.removeFromQueue}
             move={this.props.move}
-            parent={"withClient"}
+            from={"withClient"}
+            to={"available"}
+            msg={"No Longer With Customer"}
           />
         </div>
       );
