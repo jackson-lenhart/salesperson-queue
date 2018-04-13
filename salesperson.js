@@ -14,6 +14,20 @@ class Salesperson extends React.Component {
       }
     };
 
+    let markUnavailableButton = "";
+    if (this.props.from === "available" || this.props.from === "withClient") {
+      markUnavailableButton = (
+        <MoveButton
+          move={this.props.move}
+          id={this.props.id}
+          from={this.props.from}
+          to={"unavailable"}
+          msg={"Mark As Unavailable"}
+          style={style.button}
+        />
+      );
+    }
+
     return (
       <div>
         <span style={style.name}>{this.props.name}</span>
@@ -25,6 +39,7 @@ class Salesperson extends React.Component {
           msg={this.props.msg}
           style={style.button}
         />
+        {markUnavailableButton}
         <DeleteButton
           removeFromQueue={this.props.removeFromQueue}
           name={this.props.name}

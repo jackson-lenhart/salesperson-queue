@@ -6,6 +6,7 @@ import deepCopy from "deep-copy";
 import AddForm from "./add-form";
 import Available from "./available";
 import WithClient from "./with-client";
+import Unavailable from "./unavailable";
 
 class Main extends React.Component {
   constructor() {
@@ -83,6 +84,11 @@ class Main extends React.Component {
         />
         <WithClient
           withClient={this.state.queue.withClient}
+          move={this.move}
+          removeFromQueue={this.removeFromQueue}
+        />
+        <Unavailable
+          unavailable={this.state.queue.unavailable}
           move={this.move}
           removeFromQueue={this.removeFromQueue}
         />
