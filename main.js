@@ -70,6 +70,15 @@ class Main extends React.Component {
   }
 
   render() {
+    const style = {
+      item: {
+        padding: "10px"
+      },
+      table: {
+        padding: "20px"
+      }
+    };
+
     return (
       <div>
         <AddForm
@@ -81,16 +90,19 @@ class Main extends React.Component {
           available={this.state.queue.available}
           move={this.move}
           removeFromQueue={this.removeFromQueue}
+          style={style}
         />
         <WithClient
           withClient={this.state.queue.withClient}
           move={this.move}
           removeFromQueue={this.removeFromQueue}
+          style={style}
         />
         <Unavailable
           unavailable={this.state.queue.unavailable}
           move={this.move}
           removeFromQueue={this.removeFromQueue}
+          style={style}
         />
       </div>
     );

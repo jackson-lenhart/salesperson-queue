@@ -4,21 +4,12 @@ import Salesperson from "./salesperson";
 
 class Unavailable extends React.Component {
   render() {
-    const style = {
-      item: {
-        padding: "10px"
-      },
-      unavailable: {
-        padding: "20px"
-      }
-    };
-
     let unavailable;
     this.props.unavailable.length === 0 ?
       unavailable = (
         <p>None unavailable.</p>
       ) : unavailable = this.props.unavailable.map(x =>
-        <div key={x.id} style={style.item}>
+        <div key={x.id} style={this.props.style.item}>
           <Salesperson
             key={x.id}
             id={x.id}
@@ -33,7 +24,7 @@ class Unavailable extends React.Component {
       );
 
     return (
-      <div style={style.unavailable}>
+      <div style={this.props.style.table}>
         <h1>Unavailable</h1>
         {unavailable}
       </div>

@@ -4,21 +4,12 @@ import Salesperson from "./salesperson";
 
 class Available extends React.Component {
   render() {
-    const style = {
-      item: {
-        padding: "10px"
-      },
-      available: {
-        padding: "20px"
-      }
-    };
-
     let available;
     this.props.available.length === 0 ?
       available = (
         <p>None available.</p>
       ) : available = this.props.available.map(x =>
-        <div key={x.id} style={style.item}>
+        <div key={x.id} style={this.props.style.item}>
           <Salesperson
             key={x.id}
             id={x.id}
@@ -33,7 +24,7 @@ class Available extends React.Component {
       );
 
     return (
-      <div style={style.available}>
+      <div style={this.props.style.table}>
         <h1>Available</h1>
         {available}
       </div>

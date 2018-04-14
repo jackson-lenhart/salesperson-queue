@@ -4,21 +4,12 @@ import Salesperson from "./salesperson";
 
 class WithClient extends React.Component {
   render() {
-    const style = {
-      item: {
-        padding: "10px"
-      },
-      withClient: {
-        padding: "20px"
-      }
-    };
-
     let withClient;
     this.props.withClient.length === 0 ?
       withClient = (
         <p>None with clients.</p>
       ) : withClient = this.props.withClient.map(x =>
-        <div key={x.id} style={style.item}>
+        <div key={x.id} style={this.props.style.item}>
           <Salesperson
             key={x.id}
             id={x.id}
@@ -33,7 +24,7 @@ class WithClient extends React.Component {
       );
 
     return (
-      <div style={style.withClient}>
+      <div style={this.props.style.table}>
         <h1>With Client</h1>
         {withClient}
       </div>
