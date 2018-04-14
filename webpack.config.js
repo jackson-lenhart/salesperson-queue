@@ -4,6 +4,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
+  mode: "development",
   entry: "./main.js",
   module: {
       rules: [
@@ -19,6 +20,9 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: "Development"
+    }),
+    new HtmlWebpackPlugin({
+      title: "Code Splitting"
     })
   ],
   devServer: {
