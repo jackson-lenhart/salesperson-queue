@@ -15,6 +15,7 @@ class AddForm extends React.Component {
       <div>
         <input
           type="text"
+          name="currName"
           onChange={this.props.handleInput}
         />
         <button onClick={this.clickWrapper}>

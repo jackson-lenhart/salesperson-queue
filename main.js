@@ -63,9 +63,11 @@ class Main extends React.Component {
     });
   }
 
+
+
   handleInput(event) {
     this.setState({
-      currName: event.target.value
+      [event.target.name]: event.target.value
     });
   }
 
