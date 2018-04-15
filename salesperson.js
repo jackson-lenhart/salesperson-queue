@@ -9,8 +9,7 @@ class Salesperson extends React.Component {
   constructor() {
     super();
     this.state = {
-      unavailableFormMounted: false,
-      currUnavailableReason: ""
+      unavailableFormMounted: false
     };
 
     this.toggleUnavailableForm = this.toggleUnavailableForm.bind(this);
