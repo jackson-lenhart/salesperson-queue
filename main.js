@@ -7,7 +7,6 @@ import AddForm from "./add-form";
 import Available from "./available";
 import WithClient from "./with-client";
 import Unavailable from "./unavailable";
-import UnavailableForm from "./unavailable-form";
 
 class Main extends React.Component {
   constructor() {
@@ -17,15 +16,11 @@ class Main extends React.Component {
         available: [],
         withClient: [],
         unavailable: []
-      },
-      currName: "",
-      unavailabileFormMounted: false,
-      currUnavailableReason: ""
+      }
     };
 
     this.addToQueue = this.addToQueue.bind(this);
     this.removeFromQueue = this.removeFromQueue.bind(this);
-    this.handleInput = this.handleInput.bind(this);
     this.move = this.move.bind(this);
     this.moveToUnavailable = this.moveToUnavailable.bind(this);
   }
@@ -127,6 +122,7 @@ class Main extends React.Component {
         />
         <Unavailable
           unavailable={this.state.queue.unavailable}
+          handleInput={this.handleInput}
           move={this.move}
           removeFromQueue={this.removeFromQueue}
           style={style}

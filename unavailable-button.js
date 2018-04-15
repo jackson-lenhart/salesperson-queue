@@ -14,7 +14,7 @@ class UnavailableButton extends React.Component {
     return (
       <span style={this.props.style}>
         <button onClick={this.clickWrapper}>
-          <strong>Mark As Unavailable</strong>
+          Mark As Unavailable
         </button>
       </span>
     );

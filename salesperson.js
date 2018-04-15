@@ -52,6 +52,7 @@ class Salesperson extends React.Component {
             from={this.props.from}
             currUnavailableReason={this.props.currUnavailableReason}
             toggleUnavailableForm={this.toggleUnavailableForm}
+            handleInput={this.props.handleInput}
           />
         );
       }

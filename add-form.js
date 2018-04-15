@@ -1,13 +1,18 @@
 import React from "react";
 
 class AddForm extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    this.state = {
+      currName: ""
+    };
+
     this.clickWrapper = this.clickWrapper.bind(this);
+    this.handleInput = props.handleInput.bind(this);
   }
 
   clickWrapper() {
-    this.props.addToQueue(this.props.currName);
+    this.props.addToQueue(this.state.currName);
   }
 
   render() {
@@ -16,7 +21,7 @@ class AddForm extends React.Component {
         <input
           type="text"
           name="currName"
-          onChange={this.props.handleInput}
+          onChange={this.handleInput}
         />
         <button onClick={this.clickWrapper}>
           <strong>Add To Queue</strong>
