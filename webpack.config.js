@@ -20,9 +20,6 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: "Development"
-    }),
-    new HtmlWebpackPlugin({
-      title: "Code Splitting"
     })
   ],
   devServer: {
