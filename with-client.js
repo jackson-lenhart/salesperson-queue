@@ -16,6 +16,11 @@ class WithClient extends React.Component {
             name={x.name}
             removeFromQueue={this.props.removeFromQueue}
             move={this.props.move}
+            moveToUnavailable={this.props.moveToUnavailable}
+            mountUnavailableForm={this.props.mountUnavailableForm}
+            unavailableFormMounted={this.props.unavailableFormMounted}
+            currUnavailableReason={this.props.currUnavailableReason}
+            handleInput={this.props.handleInput}
             from={"withClient"}
             to={"available"}
             msg={"No Longer With Customer"}

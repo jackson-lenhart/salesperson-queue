@@ -7,6 +7,7 @@ import AddForm from "./add-form";
 import Available from "./available";
 import WithClient from "./with-client";
 import Unavailable from "./unavailable";
+import UnavailableForm from "./unavailable-form";
 
 class Main extends React.Component {
   constructor() {
@@ -17,13 +18,16 @@ class Main extends React.Component {
         withClient: [],
         unavailable: []
       },
-      currName: ""
+      currName: "",
+      unavailabileFormMounted: false,
+      currUnavailableReason: ""
     };
 
     this.addToQueue = this.addToQueue.bind(this);
     this.removeFromQueue = this.removeFromQueue.bind(this);
     this.handleInput = this.handleInput.bind(this);
     this.move = this.move.bind(this);
+    this.moveToUnavailable = this.moveToUnavailable.bind(this);
   }
 
   addToQueue(name) {
@@ -50,20 +54,31 @@ class Main extends React.Component {
   }
 
   move(id, from, to) {
-    this.setState(prevState => {
-      let newQueue = deepCopy(prevState.queue);
-      let temp = newQueue[from].find(x => x.id === id);
-      newQueue[from] = prevState.queue[from].filter(x =>
-        x.id !== id
-      );
-      newQueue[to] = prevState.queue[to].concat(temp);
-      return {
-        queue: newQueue
-      };
+    let newQueue = deepCopy(this.state.queue);
+    let temp = newQueue[from].find(x => x.id === id);
+    newQueue[from] = this.state.queue[from].filter(x =>
+      x.id !== id
+    );
+    newQueue[to] = this.state.queue[to].concat(temp);
+    this.setState({
+      queue: newQueue
     });
   }
 
-
+  moveToUnavailable(id, from, reason) {
+    let newQueue = deepCopy(this.state.queue);
+    let temp = newQueue[from].find(x => x.id === id);
+    newQueue[from] = this.state.queue[from].filter(x =>
+      x.id !== id
+    );
+    newQueue.unavailable = this.state.queue.unavailable.concat(
+      Object.assign(temp, { reason })
+    );
+    this.setState({
+      queue: newQueue,
+      unavailableFormMounted: false
+    });
+  }
 
   handleInput(event) {
     this.setState({
@@ -92,12 +107,22 @@ class Main extends React.Component {
           available={this.state.queue.available}
           move={this.move}
           removeFromQueue={this.removeFromQueue}
+          mountUnavailableForm={this.mountUnavailableForm}
+          unavailableFormMounted={this.state.unavailableFormMounted}
+          currUnavailableReason={this.state.currUnavailableReason}
+          moveToUnavailable={this.moveToUnavailable}
+          handleInput={this.handleInput}
           style={style}
         />
         <WithClient
           withClient={this.state.queue.withClient}
           move={this.move}
           removeFromQueue={this.removeFromQueue}
+          mountUnavailableForm={this.mountUnavailableForm}
+          unavailableFormMounted={this.state.unavailableFormMounted}
+          currUnavailableReason={this.state.currUnavailableReason}
+          moveToUnavailable={this.moveToUnavailable}
+          handleInput={this.handleInput}
           style={style}
         />
         <Unavailable

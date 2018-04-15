@@ -16,6 +16,11 @@ class Available extends React.Component {
             name={x.name}
             move={this.props.move}
             removeFromQueue={this.props.removeFromQueue}
+            mountUnavailableForm={this.props.mountUnavailableForm}
+            currUnavailableReason={this.props.currUnavailableReason}
+            unavailableFormMounted={this.props.unavailableFormMounted}
+            moveToUnavailable={this.props.moveToUnavailable}
+            handleInput={this.props.handleInput}
             from={"available"}
             to={"withClient"}
             msg={"Helped A Customer"}

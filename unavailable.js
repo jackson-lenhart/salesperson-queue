@@ -16,6 +16,7 @@ class Unavailable extends React.Component {
             name={x.name}
             move={this.props.move}
             removeFromQueue={this.props.removeFromQueue}
+            unavailableReason={x.reason}
             from={"unavailable"}
             to={"available"}
             msg={"Mark As Available"}

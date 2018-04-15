@@ -2,8 +2,26 @@ import React from "react";
 
 import DeleteButton from "./delete-button";
 import MoveButton from "./move-button";
+import UnavailableButton from "./unavailable-button";
+import UnavailableForm from "./unavailable-form";
 
 class Salesperson extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      unavailableFormMounted: false,
+      currUnavailableReason: ""
+    };
+
+    this.toggleUnavailableForm = this.toggleUnavailableForm.bind(this);
+  }
+
+  toggleUnavailableForm() {
+    this.setState({
+      unavailableFormMounted: !this.state.unavailableFormMounted
+    });
+  }
+
   render() {
     const style = {
       name: {
@@ -11,20 +29,39 @@ class Salesperson extends React.Component {
       },
       button: {
         padding: "5px"
+      },
+      reason: {
+        color: "red"
       }
     };
 
-    let markUnavailableButton = "";
+    let unavailableButton = "";
+    let unavailableForm = "";
     if (this.props.from === "available" || this.props.from === "withClient") {
-      markUnavailableButton = (
-        <MoveButton
-          move={this.props.move}
-          id={this.props.id}
-          from={this.props.from}
-          to={"unavailable"}
-          msg={"Mark As Unavailable"}
+      unavailableButton = (
+        <UnavailableButton
+          toggleUnavailableForm={this.toggleUnavailableForm}
           style={style.button}
         />
+      );
+
+      if (this.state.unavailableFormMounted) {
+        unavailableForm = (
+          <UnavailableForm
+            id={this.props.id}
+            moveToUnavailable={this.props.moveToUnavailable}
+            from={this.props.from}
+            currUnavailableReason={this.props.currUnavailableReason}
+            toggleUnavailableForm={this.toggleUnavailableForm}
+          />
+        );
+      }
+    }
+
+    let unavailableReason = "";
+    if (this.props.from === "unavailable") {
+      unavailableReason = (
+        <p style={style.reason}>{this.props.unavailableReason}</p>
       );
     }
 
@@ -39,13 +76,15 @@ class Salesperson extends React.Component {
           msg={this.props.msg}
           style={style.button}
         />
-        {markUnavailableButton}
+        {unavailableButton}
         <DeleteButton
           removeFromQueue={this.props.removeFromQueue}
           name={this.props.name}
           id={this.props.id}
           style={style.button}
         />
+        {unavailableForm}
+        {unavailableReason}
       </div>
     );
   }
