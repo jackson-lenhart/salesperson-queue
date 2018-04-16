@@ -102,9 +102,6 @@ class Main extends React.Component {
           available={this.state.queue.available}
           move={this.move}
           removeFromQueue={this.removeFromQueue}
-          mountUnavailableForm={this.mountUnavailableForm}
-          unavailableFormMounted={this.state.unavailableFormMounted}
-          currUnavailableReason={this.state.currUnavailableReason}
           moveToUnavailable={this.moveToUnavailable}
           handleInput={this.handleInput}
           style={style}
@@ -113,9 +110,6 @@ class Main extends React.Component {
           withClient={this.state.queue.withClient}
           move={this.move}
           removeFromQueue={this.removeFromQueue}
-          mountUnavailableForm={this.mountUnavailableForm}
-          unavailableFormMounted={this.state.unavailableFormMounted}
-          currUnavailableReason={this.state.currUnavailableReason}
           moveToUnavailable={this.moveToUnavailable}
           handleInput={this.handleInput}
           style={style}
