@@ -54,6 +54,7 @@ class Main extends React.Component {
     newQueue[from] = this.state.queue[from].filter(x =>
       x.id !== id
     );
+    delete temp.reason;
     newQueue[to] = this.state.queue[to].concat(temp);
     this.setState({
       queue: newQueue
