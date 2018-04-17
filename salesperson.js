@@ -1,6 +1,7 @@
 import React from "react";
 
 import DeleteButton from "./delete-button";
+import DeleteForm from "./delete-form";
 import MoveButton from "./move-button";
 import UnavailableButton from "./unavailable-button";
 import UnavailableForm from "./unavailable-form";
@@ -9,15 +10,23 @@ class Salesperson extends React.Component {
   constructor() {
     super();
     this.state = {
-      unavailableFormMounted: false
+      unavailableFormMounted: false,
+      deleteFormMounted: false
     };
 
     this.toggleUnavailableForm = this.toggleUnavailableForm.bind(this);
+    this.toggleDeleteForm = this.toggleDeleteForm.bind(this);
   }
 
   toggleUnavailableForm() {
     this.setState({
       unavailableFormMounted: !this.state.unavailableFormMounted
+    });
+  }
+
+  toggleDeleteForm() {
+    this.setState({
+      deleteFormMounted: !this.state.deleteFormMounted
     });
   }
 
@@ -50,7 +59,6 @@ class Salesperson extends React.Component {
             id={this.props.id}
             moveToUnavailable={this.props.moveToUnavailable}
             from={this.props.from}
-            currUnavailableReason={this.props.currUnavailableReason}
             toggleUnavailableForm={this.toggleUnavailableForm}
             handleInput={this.props.handleInput}
           />
@@ -62,6 +70,19 @@ class Salesperson extends React.Component {
     if (this.props.from === "unavailable") {
       unavailableReason = (
         <p style={style.reason}>{this.props.unavailableReason}</p>
+      );
+    }
+
+    let deleteForm = "";
+    if (this.state.deleteFormMounted) {
+      deleteForm = (
+        <DeleteForm
+          handleInput={this.props.handleInput}
+          toggleDeleteForm={this.toggleDeleteForm}
+          name={this.props.name}
+          id={this.props.id}
+          removeFromQueue={this.props.removeFromQueue}
+        />
       );
     }
 
@@ -79,12 +100,14 @@ class Salesperson extends React.Component {
         {unavailableButton}
         <DeleteButton
           removeFromQueue={this.props.removeFromQueue}
+          toggleDeleteForm={this.toggleDeleteForm}
           name={this.props.name}
           id={this.props.id}
           style={style.button}
         />
         {unavailableForm}
         {unavailableReason}
+        {deleteForm}
       </div>
     );
   }
