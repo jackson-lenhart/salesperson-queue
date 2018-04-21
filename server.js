@@ -20,7 +20,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/salespeople", (req, res) => {
+app.get("/calendars", (req, res) => {
   acuity.request("calendars", (err, _res, calendars) => {
     if (err) {
       console.error(err);

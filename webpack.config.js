@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   mode: "development",
-  entry: "./client/main.js",
+  entry: ["babel-polyfill", "./client/main.js"],
   module: {
       rules: [
       {

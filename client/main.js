@@ -25,6 +25,12 @@ class Main extends React.Component {
     this.moveToUnavailable = this.moveToUnavailable.bind(this);
   }
 
+  async componentDidMount() {
+    const res = await fetch("http://localhost:3000/calendars");
+    const calendars = await res.json();
+    console.log(calendars);
+  }
+
   addToQueue(name) {
     let newQueue = deepCopy(this.state.queue);
     newQueue.available = this.state.queue.available.concat({
