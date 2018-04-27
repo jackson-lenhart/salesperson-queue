@@ -5,6 +5,8 @@ const { jsonParser } = require("body-parser");
 const Acuity = require("acuityscheduling");
 
 const { userId, apiKey } = require("./api-credentials");
+const parsableDate = require("./parsable-date");
+const acuityRequest = require("./acuity-request");
 
 const app = express();
 const acuity = Acuity.basic({
@@ -20,12 +22,37 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/calendars", (req, res) => {
-  acuity.request("calendars", (err, _res, calendars) => {
-    if (err) {
-      console.error(err);
+app.get("/startday", async (req, res) => {
+  let calendars = await acuityRequest(acuity, "/calendars");
+  calendars = calendars.filter(x => x.id !== 1874294);
+  let todaysDate = parsableDate(new Date());
+  let workingToday = [];
+  let offToday = [];
+  for (let c of calendars) {
+    let times;
+    if (c.id === 2061897) {
+      times = await acuityRequest(
+        acuity,
+        `/availability/times?date=${todaysDate}&appointmentTypeID=6229043&calendarID=${c.id}&timezone=America%2FNew_York`
+      );
+    } else {
+      times = await acuityRequest(
+        acuity,
+        `/availability/times?date=${todaysDate}&appointmentTypeID=6078595&calendarID=${c.id}&timezone=America%2FNew_York`
+      );
     }
-
-    res.json(calendars);
+    let data = {
+      id: c.id,
+      name: c.name
+    };
+    if (times.length === 0) {
+      offToday.push(data);
+    } else {
+      workingToday.push(data);
+    }
+  }
+  res.json({
+    workingToday,
+    offToday
   });
 });

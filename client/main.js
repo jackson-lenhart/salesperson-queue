@@ -25,10 +25,22 @@ class Main extends React.Component {
     this.moveToUnavailable = this.moveToUnavailable.bind(this);
   }
 
-  async componentDidMount() {
-    const res = await fetch("http://localhost:3000/calendars");
-    const calendars = await res.json();
-    console.log(calendars);
+  componentDidMount() {
+    fetch("http://localhost:3000/startday")
+      .then(res => res.json())
+      .then(({ workingToday, offToday}) =>
+        this.setState(prevState => ({
+          queue: {
+            available: workingToday,
+            withClient: [],
+            unavailable: offToday.map(x => ({
+              id: x.id,
+              name: x.name,
+              reason: "off"
+            }))
+          }
+        }))
+      ).catch(err => console.error(err));
   }
 
   addToQueue(name) {
