@@ -82,6 +82,7 @@ class Salesperson extends React.Component {
           name={this.props.name}
           id={this.props.id}
           removeFromQueue={this.props.removeFromQueue}
+          from={this.props.from}
         />
       );
     }

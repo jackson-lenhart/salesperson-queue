@@ -12,11 +12,9 @@ class Main extends React.Component {
   constructor() {
     super();
     this.state = {
-      queue: {
-        available: [],
-        withClient: [],
-        unavailable: []
-      }
+      available: [],
+      withClient: [],
+      unavailable: []
     };
 
     this.addToQueue = this.addToQueue.bind(this);
@@ -26,72 +24,40 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:3000/startday")
+    fetch("http://localhost:3000/calendars")
       .then(res => res.json())
-      .then(({ workingToday, offToday}) =>
-        this.setState(prevState => ({
-          queue: {
-            available: workingToday,
-            withClient: [],
-            unavailable: offToday.map(x => ({
-              id: x.id,
-              name: x.name,
-              reason: "off"
-            }))
-          }
-        }))
+      .then(calendars =>
+        this.setState({
+          available: calendars
+        })
       ).catch(err => console.error(err));
   }
 
   addToQueue(name) {
-    let newQueue = deepCopy(this.state.queue);
-    newQueue.available = this.state.queue.available.concat({
-      name,
-      id: shortid.generate()
-    });
-    this.setState({
-      queue: newQueue
-    });
+    this.setState(prevState => ({
+      available: prevState.available.concat({ name, id: shortid.generate() })
+    }));
   }
 
-  removeFromQueue(id) {
-    let newQueue = deepCopy(this.state.queue);
-    for (let k in this.state.queue) {
-      newQueue[k] = this.state.queue[k].filter(x =>
-        x.id !== id
-      );
-    }
-    this.setState({
-      queue: newQueue
-    });
+  removeFromQueue(id, from) {
+    this.setState(prevState => ({
+      [from]: prevState[from].filter(x => x.id !== id)
+    }));
   }
 
   move(id, from, to) {
-    let newQueue = deepCopy(this.state.queue);
-    let temp = newQueue[from].find(x => x.id === id);
-    newQueue[from] = this.state.queue[from].filter(x =>
-      x.id !== id
-    );
-    delete temp.reason;
-    newQueue[to] = this.state.queue[to].concat(temp);
-    this.setState({
-      queue: newQueue
-    });
+    this.setState(prevState => ({
+      [from]: prevState[from].filter(x => x.id !== id),
+      [to]: prevState[to].concat(prevState[from].find(x => x.id === id))
+    }));
   }
 
   moveToUnavailable(id, from, reason) {
-    let newQueue = deepCopy(this.state.queue);
-    let temp = newQueue[from].find(x => x.id === id);
-    newQueue[from] = this.state.queue[from].filter(x =>
-      x.id !== id
-    );
-    newQueue.unavailable = this.state.queue.unavailable.concat(
-      Object.assign(temp, { reason })
-    );
-    this.setState({
-      queue: newQueue,
-      unavailableFormMounted: false
-    });
+    this.setState(prevState => ({
+      [from]: prevState[from].filter(x => x.id !== id),
+      unavailable: prevState.unavailable
+        .concat(Object.assign(prevState[from].find(x => x.id === id), { reason }))
+    }));
   }
 
   handleInput(event) {
@@ -118,7 +84,7 @@ class Main extends React.Component {
           currName={this.state.currName}
         />
         <Available
-          available={this.state.queue.available}
+          available={this.state.available}
           move={this.move}
           removeFromQueue={this.removeFromQueue}
           moveToUnavailable={this.moveToUnavailable}
@@ -126,7 +92,7 @@ class Main extends React.Component {
           style={style}
         />
         <WithClient
-          withClient={this.state.queue.withClient}
+          withClient={this.state.withClient}
           move={this.move}
           removeFromQueue={this.removeFromQueue}
           moveToUnavailable={this.moveToUnavailable}
@@ -134,7 +100,7 @@ class Main extends React.Component {
           style={style}
         />
         <Unavailable
-          unavailable={this.state.queue.unavailable}
+          unavailable={this.state.unavailable}
           handleInput={this.handleInput}
           move={this.move}
           removeFromQueue={this.removeFromQueue}
