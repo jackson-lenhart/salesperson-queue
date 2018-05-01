@@ -16,7 +16,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/appointments-today", async (req, res) => {
+app.get("/appointments-today", (req, res) => {
   let todaysDate = parsableDate(new Date());
   let options = {
     qs: {
@@ -25,11 +25,13 @@ app.get("/appointments-today", async (req, res) => {
       maxDate: todaysDate
     }
   };
-  let appts = await acuityRequest("appointments", options);
-  res.json(appts);
+  acuityRequest("appointments", options)
+    .then(appts => res.json(appts))
+    .catch(err => console.error(err));
 });
 
-app.get("/calendars", async (req, res) => {
-  let calendars = await acuityRequest("/calendars");
-  res.json(calendars);
+app.get("/calendars", (req, res) => {
+  acuityRequest("/calendars")
+    .then(cs => res.json(cs))
+    .catch(err => console.error(err));
 });
