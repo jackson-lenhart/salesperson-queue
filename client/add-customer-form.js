@@ -11,12 +11,17 @@ class AddCustomerForm extends React.Component {
 
     this.handleInput = props.handleInput.bind(this);
     this.clickWrapper = this.clickWrapper.bind(this);
+    this.cancel = this.cancel.bind(this);
   }
 
   clickWrapper(e) {
     e.preventDefault();
     this.props.addCustomer(this.state);
     e.target.reset();
+  }
+
+  cancel() {
+    this.props.toggleCustomerForm();
   }
 
   render() {
@@ -30,9 +35,8 @@ class AddCustomerForm extends React.Component {
           <p>Description:</p>
           <input type="text" name="description" onChange={this.handleInput} />
           <br/><br/>
-          <button type="submit">
-            <strong>Add Customer</strong>
-          </button>
+          <button type="submit">OK</button>
+          <button type="button" onClick={this.cancel}>Cancel</button>
         </form>
       </div>
     );

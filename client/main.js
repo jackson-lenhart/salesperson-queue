@@ -9,6 +9,7 @@ import Available from "./available";
 import WithClient from "./with-client";
 import Unavailable from "./unavailable";
 import Waiting from "./waiting";
+import AddCustomerButton from "./add-customer-button";
 
 class Main extends React.Component {
   constructor() {
@@ -17,7 +18,8 @@ class Main extends React.Component {
       available: [],
       withClient: [],
       unavailable: [],
-      waiting: []
+      waiting: [],
+      customerFormMounted: false
     };
 
     this.addSalesperson = this.addSalesperson.bind(this);
@@ -25,6 +27,7 @@ class Main extends React.Component {
     this.removeSalesperson = this.removeSalesperson.bind(this);
     this.moveSalesperson = this.moveSalesperson.bind(this);
     this.moveToUnavailable = this.moveToUnavailable.bind(this);
+    this.toggleCustomerForm = this.toggleCustomerForm.bind(this);
   }
 
   componentDidMount() {
@@ -64,6 +67,12 @@ class Main extends React.Component {
     }));
   }
 
+  toggleCustomerForm() {
+    this.setState(prevState => ({
+      customerFormMounted: !prevState.customerFormMounted
+    }));
+  }
+
   addCustomer({ name, salesperson, description }) {
     this.setState(prevState => ({
       waiting: prevState.waiting.concat({
@@ -89,6 +98,9 @@ class Main extends React.Component {
 
   render() {
     const style = {
+      app: {
+        textAlign: "center"
+      },
       item: {
         padding: "10px"
       },
@@ -106,8 +118,20 @@ class Main extends React.Component {
       }
     };
 
+    let addCustomer;
+    this.state.customerFormMounted ?
+      addCustomer = (
+        <AddCustomerForm
+          handleInput={this.handleInput}
+          addCustomer={this.addCustomer}
+          toggleCustomerForm={this.toggleCustomerForm}
+        />
+      ) : addCustomer = (
+        <AddCustomerButton toggleCustomerForm={this.toggleCustomerForm} />
+      );
+
     return (
-      <div>
+      <div style={style.app}>
         <h1 style={style.header}>Showroom Manager</h1>
         <div style={style.row}>
           <div style={style.column}>
@@ -142,10 +166,7 @@ class Main extends React.Component {
           </div>
           <div style={style.column}>
             <h2 style={style.header}>Customers</h2>
-            <AddCustomerForm
-              handleInput={this.handleInput}
-              addCustomer={this.addCustomer}
-            />
+            {addCustomer}
             <Waiting
               waiting={this.state.waiting}
               handleInput={this.handleInput}
