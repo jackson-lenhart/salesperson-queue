@@ -21,7 +21,7 @@ class DeleteForm extends React.Component {
       return;
     }
 
-    this.props.removeFromQueue(this.props.id, this.props.from);
+    this.props.removeSalesperson(this.props.id, this.props.from);
     this.props.toggleDeleteForm();
   }
 

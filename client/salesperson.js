@@ -81,7 +81,7 @@ class Salesperson extends React.Component {
           toggleDeleteForm={this.toggleDeleteForm}
           name={this.props.name}
           id={this.props.id}
-          removeFromQueue={this.props.removeFromQueue}
+          removeSalesperson={this.props.removeSalesperson}
           from={this.props.from}
         />
       );
@@ -91,7 +91,7 @@ class Salesperson extends React.Component {
       <div>
         <span style={style.name}>{this.props.name}</span>
         <MoveButton
-          move={this.props.move}
+          moveSalesperson={this.props.moveSalesperson}
           id={this.props.id}
           from={this.props.from}
           to={this.props.to}
@@ -100,7 +100,7 @@ class Salesperson extends React.Component {
         />
         {unavailableButton}
         <DeleteButton
-          removeFromQueue={this.props.removeFromQueue}
+          removeSalesperson={this.props.removeSalesperson}
           toggleDeleteForm={this.toggleDeleteForm}
           name={this.props.name}
           id={this.props.id}

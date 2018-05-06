@@ -7,7 +7,7 @@ class MoveButton extends React.Component {
   }
 
   clickWrapper() {
-    this.props.move(this.props.id, this.props.from, this.props.to);
+    this.props.moveSalesperson(this.props.id, this.props.from, this.props.to);
   }
 
   render() {

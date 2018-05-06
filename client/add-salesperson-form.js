@@ -1,6 +1,6 @@
 import React from "react";
 
-class AddForm extends React.Component {
+class AddSalespersonForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,7 +12,7 @@ class AddForm extends React.Component {
   }
 
   clickWrapper() {
-    this.props.addToQueue(this.state.currName);
+    this.props.addSalesperson(this.state.currName);
   }
 
   render() {
@@ -24,11 +24,11 @@ class AddForm extends React.Component {
           onChange={this.handleInput}
         />
         <button onClick={this.clickWrapper}>
-          <strong>Add To Queue</strong>
+          <strong>Add Salesperson</strong>
         </button>
       </div>
     );
   }
 }
 
-export default AddForm;
+export default AddSalespersonForm;

@@ -14,8 +14,8 @@ class Available extends React.Component {
             key={x.id}
             id={x.id}
             name={x.name}
-            move={this.props.move}
-            removeFromQueue={this.props.removeFromQueue}
+            moveSalesperson={this.props.moveSalesperson}
+            removeSalesperson={this.props.removeSalesperson}
             moveToUnavailable={this.props.moveToUnavailable}
             handleInput={this.props.handleInput}
             from={"available"}
@@ -27,7 +27,7 @@ class Available extends React.Component {
 
     return (
       <div style={this.props.style.table}>
-        <h1>Available</h1>
+        <h3 style={this.props.style.header}>Available</h3>
         {available}
       </div>
     );

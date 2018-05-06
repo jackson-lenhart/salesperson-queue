@@ -14,8 +14,8 @@ class WithClient extends React.Component {
             key={x.id}
             id={x.id}
             name={x.name}
-            removeFromQueue={this.props.removeFromQueue}
-            move={this.props.move}
+            removeSalesperson={this.props.removeFromQueue}
+            moveSalesperson={this.props.moveSalesperson}
             moveToUnavailable={this.props.moveToUnavailable}
             mountUnavailableForm={this.props.mountUnavailableForm}
             unavailableFormMounted={this.props.unavailableFormMounted}
@@ -30,7 +30,7 @@ class WithClient extends React.Component {
 
     return (
       <div style={this.props.style.table}>
-        <h1>With Client</h1>
+        <h3 style={this.props.style.header}>With Client</h3>
         {withClient}
       </div>
     );

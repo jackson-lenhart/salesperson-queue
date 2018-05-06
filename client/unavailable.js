@@ -14,8 +14,8 @@ class Unavailable extends React.Component {
             key={x.id}
             id={x.id}
             name={x.name}
-            move={this.props.move}
-            removeFromQueue={this.props.removeFromQueue}
+            moveSalesperson={this.props.moveSalesperson}
+            removeSalesperson={this.props.removeSalesperson}
             handleInput={this.props.handleInput}
             unavailableReason={x.reason}
             from={"unavailable"}
@@ -27,7 +27,7 @@ class Unavailable extends React.Component {
 
     return (
       <div style={this.props.style.table}>
-        <h1>Unavailable</h1>
+        <h3 style={this.props.style.header}>Unavailable</h3>
         {unavailable}
       </div>
     );
