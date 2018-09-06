@@ -1,9 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 import shortid from "shortid";
-import deepCopy from "deep-copy";
 
-import AddSalespersonForm from "./add-salesperson-form";
 import AddCustomerForm from "./add-customer-form";
 import Available from "./available";
 import WithClient from "./with-client";
@@ -24,7 +22,6 @@ class Main extends React.Component {
       customerFormMounted: false
     };
 
-    this.addSalesperson = this.addSalesperson.bind(this);
     this.addCustomer = this.addCustomer.bind(this);
     this.removeSalesperson = this.removeSalesperson.bind(this);
     this.moveSalesperson = this.moveSalesperson.bind(this);
@@ -48,12 +45,6 @@ class Main extends React.Component {
           });
         }
       }).catch(err => console.error(err));
-  }
-
-  addSalesperson(name) {
-    this.setState(prevState => ({
-      available: prevState.available.concat({ name, id: shortid.generate() })
-    }));
   }
 
   removeSalesperson(id, from) {
@@ -147,11 +138,17 @@ class Main extends React.Component {
         <h1 style={style.header}>Showroom Manager</h1>
         <div style={style.row}>
           <div style={style.column}>
-            <h2 style={style.header}>Salespeople</h2>
-            <AddSalespersonForm
-              addSalesperson={this.addSalesperson}
+            <h2 style={style.header}>Customers</h2>
+            {addCustomer}
+            <Waiting
+              waiting={this.state.waiting}
               handleInput={this.handleInput}
+              removeCustomer={this.removeCustomer}
+              style={style}
             />
+          </div>
+          <div style={style.column}>
+            <h2 style={style.header}>Salespeople</h2>
             {
               isLoading ? (
                 <p>Loading...</p>
@@ -184,16 +181,6 @@ class Main extends React.Component {
               )
             }
           </div>
-          <div style={style.column}>
-            <h2 style={style.header}>Customers</h2>
-            {addCustomer}
-            <Waiting
-              waiting={this.state.waiting}
-              handleInput={this.handleInput}
-              removeCustomer={this.removeCustomer}
-              style={style}
-            />
-          </div>
         </div>
       </div>
     );
@@ -202,5 +189,5 @@ class Main extends React.Component {
 
 render(
   <Main />,
-  document.body
+  document.getElementById("main")
 );
