@@ -16,7 +16,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/appointments-today", (req, res) => {
+app.get("/api/appointments-today", (req, res) => {
   let todaysDate = parsableDate(new Date());
   let options = {
     qs: {
@@ -30,7 +30,7 @@ app.get("/appointments-today", (req, res) => {
     .catch(err => console.error(err));
 });
 
-app.get("/calendars", (req, res) => {
+app.get("/api/calendars", (req, res) => {
   acuityRequest("/calendars")
     .then(cs => {
       res.json(cs);

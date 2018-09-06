@@ -23,7 +23,10 @@ module.exports = {
     })
   ],
   devServer: {
-    contentBase: "./dist"
+    contentBase: "./dist",
+    proxy: {
+      "/api": "http://localhost:3000"
+    }
   },
   output: {
     path: path.resolve(__dirname, "dist"),

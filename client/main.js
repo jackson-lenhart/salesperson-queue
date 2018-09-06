@@ -30,9 +30,16 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:3000/calendars")
+    const options = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+    fetch("/api/calendars", options)
       .then(res => res.json())
       .then(calendars => {
+        // if calendars is not an array, there's been an error with the request
         if (!Array.isArray(calendars)) {
           this.setState({
             isLoading: false,
@@ -81,7 +88,8 @@ class Main extends React.Component {
         salesperson,
         description,
         id: shortid.generate()
-      })
+      }),
+      customerFormMounted: false
     }));
   }
 
