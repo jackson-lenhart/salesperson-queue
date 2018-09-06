@@ -119,19 +119,14 @@ class Main extends React.Component {
       }
     };
 
-    const { isLoading } = this.state;
-
-    let addCustomer;
-    this.state.customerFormMounted ?
-      addCustomer = (
-        <AddCustomerForm
-          handleInput={this.handleInput}
-          addCustomer={this.addCustomer}
-          toggleCustomerForm={this.toggleCustomerForm}
-        />
-      ) : addCustomer = (
-        <AddCustomerButton toggleCustomerForm={this.toggleCustomerForm} />
-      );
+    const {
+      isLoading,
+      customerFormMounted,
+      waiting,
+      available,
+      withClient,
+      unavailable
+    } = this.state;
 
     return (
       <div style={style.app}>
@@ -139,7 +134,17 @@ class Main extends React.Component {
         <div style={style.row}>
           <div style={style.column}>
             <h2 style={style.header}>Customers</h2>
-            {addCustomer}
+            {
+              customerFormMounted ? (
+                <AddCustomerForm
+                  handleInput={this.handleInput}
+                  addCustomer={this.addCustomer}
+                  toggleCustomerForm={this.toggleCustomerForm}
+                />
+              ) : (
+                <AddCustomerButton toggleCustomerForm={this.toggleCustomerForm} />
+              )
+            }
             <Waiting
               waiting={this.state.waiting}
               handleInput={this.handleInput}
@@ -155,7 +160,7 @@ class Main extends React.Component {
               ) : (
                 <div>
                   <Available
-                    available={this.state.available}
+                    available={available}
                     moveSalesperson={this.moveSalesperson}
                     removeSalesperson={this.removeSalesperson}
                     moveToUnavailable={this.moveToUnavailable}
@@ -163,7 +168,7 @@ class Main extends React.Component {
                     style={style}
                   />
                   <WithClient
-                    withClient={this.state.withClient}
+                    withClient={withClient}
                     moveSalesperson={this.moveSalesperson}
                     removeSalesperson={this.removeSalesperson}
                     moveToUnavailable={this.moveToUnavailable}
@@ -171,7 +176,7 @@ class Main extends React.Component {
                     style={style}
                   />
                   <Unavailable
-                    unavailable={this.state.unavailable}
+                    unavailable={unavailable}
                     handleInput={this.handleInput}
                     moveSalesperson={this.moveSalesperson}
                     removeSalesperson={this.removeSalesperson}
