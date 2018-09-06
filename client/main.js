@@ -15,6 +15,8 @@ class Main extends React.Component {
   constructor() {
     super();
     this.state = {
+      isLoading: true,
+      errorLoadingCalendars: false,
       available: [],
       withClient: [],
       unavailable: [],
@@ -33,11 +35,19 @@ class Main extends React.Component {
   componentDidMount() {
     fetch("http://localhost:3000/calendars")
       .then(res => res.json())
-      .then(calendars =>
-        this.setState({
-          available: calendars
-        })
-      ).catch(err => console.error(err));
+      .then(calendars => {
+        if (!Array.isArray(calendars)) {
+          this.setState({
+            isLoading: false,
+            errorLoadingCalendars: true
+          });
+        } else {
+          this.setState({
+            isLoading: false,
+            available: calendars
+          });
+        }
+      }).catch(err => console.error(err));
   }
 
   addSalesperson(name) {
@@ -118,6 +128,8 @@ class Main extends React.Component {
       }
     };
 
+    const { isLoading } = this.state;
+
     let addCustomer;
     this.state.customerFormMounted ?
       addCustomer = (
@@ -140,29 +152,37 @@ class Main extends React.Component {
               addSalesperson={this.addSalesperson}
               handleInput={this.handleInput}
             />
-            <Available
-              available={this.state.available}
-              moveSalesperson={this.moveSalesperson}
-              removeSalesperson={this.removeSalesperson}
-              moveToUnavailable={this.moveToUnavailable}
-              handleInput={this.handleInput}
-              style={style}
-            />
-            <WithClient
-              withClient={this.state.withClient}
-              moveSalesperson={this.moveSalesperson}
-              removeSalesperson={this.removeSalesperson}
-              moveToUnavailable={this.moveToUnavailable}
-              handleInput={this.handleInput}
-              style={style}
-            />
-            <Unavailable
-              unavailable={this.state.unavailable}
-              handleInput={this.handleInput}
-              moveSalesperson={this.moveSalesperson}
-              removeSalesperson={this.removeSalesperson}
-              style={style}
-            />
+            {
+              isLoading ? (
+                <p>Loading...</p>
+              ) : (
+                <div>
+                  <Available
+                    available={this.state.available}
+                    moveSalesperson={this.moveSalesperson}
+                    removeSalesperson={this.removeSalesperson}
+                    moveToUnavailable={this.moveToUnavailable}
+                    handleInput={this.handleInput}
+                    style={style}
+                  />
+                  <WithClient
+                    withClient={this.state.withClient}
+                    moveSalesperson={this.moveSalesperson}
+                    removeSalesperson={this.removeSalesperson}
+                    moveToUnavailable={this.moveToUnavailable}
+                    handleInput={this.handleInput}
+                    style={style}
+                  />
+                  <Unavailable
+                    unavailable={this.state.unavailable}
+                    handleInput={this.handleInput}
+                    moveSalesperson={this.moveSalesperson}
+                    removeSalesperson={this.removeSalesperson}
+                    style={style}
+                  />
+                </div>
+              )
+            }
           </div>
           <div style={style.column}>
             <h2 style={style.header}>Customers</h2>

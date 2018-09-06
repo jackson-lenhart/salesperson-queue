@@ -2,11 +2,9 @@
 
 const Acuity = require("acuityscheduling");
 
-const { userId, apiKey } = require("./api-credentials");
-
 const acuity = Acuity.basic({
-  userId,
-  apiKey
+  userId: process.env.ACUITY_USERID,
+  apiKey: process.env.ACUITY_APIKEY
 });
 
 module.exports = (endpoint, options) => {

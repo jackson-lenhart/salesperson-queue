@@ -32,6 +32,8 @@ app.get("/appointments-today", (req, res) => {
 
 app.get("/calendars", (req, res) => {
   acuityRequest("/calendars")
-    .then(cs => res.json(cs))
+    .then(cs => {
+      res.json(cs);
+    })
     .catch(err => console.error(err));
 });
