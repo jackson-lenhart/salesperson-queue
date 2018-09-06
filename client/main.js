@@ -2,12 +2,12 @@ import React from "react";
 import { render } from "react-dom";
 import shortid from "shortid";
 
-import AddCustomerForm from "./add-customer-form";
 import Available from "./available";
 import WithClient from "./with-client";
 import Unavailable from "./unavailable";
 import Waiting from "./waiting";
 import AddCustomerButton from "./add-customer-button";
+import AddCustomerForm from "./add-customer-form";
 
 class Main extends React.Component {
   constructor() {
@@ -30,13 +30,7 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    const options = {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    };
-
-    fetch("/api/calendars", options)
+    fetch("/api/calendars")
       .then(res => res.json())
       .then(calendars => {
         // if calendars is not an array, there's been an error with the request

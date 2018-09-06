@@ -1,10 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import DeleteButton from "./delete-button";
-import DeleteForm from "./delete-form";
-import MoveButton from "./move-button";
-import UnavailableButton from "./unavailable-button";
-import UnavailableForm from "./unavailable-form";
+import MoveButton from './move-button';
+import UnavailableButton from './unavailable-button';
+import UnavailableForm from './unavailable-form';
 
 class Salesperson extends React.Component {
   constructor() {
@@ -33,82 +31,65 @@ class Salesperson extends React.Component {
   render() {
     const style = {
       name: {
-        padding: "10px"
+        padding: '10px'
       },
       button: {
-        padding: "5px"
+        padding: '5px'
       },
       reason: {
-        color: "red"
+        color: 'red'
       }
     };
 
-    let unavailableButton = "";
-    let unavailableForm = "";
-    if (this.props.from === "available" || this.props.from === "withClient") {
-      unavailableButton = (
-        <UnavailableButton
-          toggleUnavailableForm={this.toggleUnavailableForm}
-          style={style.button}
-        />
-      );
+    const {
+      id,
+      name,
+      parent,
+      movesTo,
+      moveToUnavailable,
+      handleInput,
+      removeSalesperson,
+      moveSalesperson,
+      buttonText,
+      unavailableReason
+    } = this.props;
 
-      if (this.state.unavailableFormMounted) {
-        unavailableForm = (
-          <UnavailableForm
-            id={this.props.id}
-            moveToUnavailable={this.props.moveToUnavailable}
-            from={this.props.from}
-            toggleUnavailableForm={this.toggleUnavailableForm}
-            handleInput={this.props.handleInput}
-          />
-        );
-      }
-    }
-
-    let unavailableReason = "";
-    if (this.props.from === "unavailable") {
-      unavailableReason = (
-        <p style={style.reason}>{this.props.unavailableReason}</p>
-      );
-    }
-
-    let deleteForm = "";
-    if (this.state.deleteFormMounted) {
-      deleteForm = (
-        <DeleteForm
-          handleInput={this.props.handleInput}
-          toggleDeleteForm={this.toggleDeleteForm}
-          name={this.props.name}
-          id={this.props.id}
-          removeSalesperson={this.props.removeSalesperson}
-          from={this.props.from}
-        />
-      );
-    }
+    const {
+      unavailableFormMounted,
+      deleteFormMounted
+    } = this.state;
 
     return (
       <div>
-        <span style={style.name}>{this.props.name}</span>
+        <span style={style.name}>{name}</span>
         <MoveButton
-          moveSalesperson={this.props.moveSalesperson}
-          id={this.props.id}
-          from={this.props.from}
-          to={this.props.to}
-          msg={this.props.msg}
+          moveSalesperson={moveSalesperson}
+          id={id}
+          parent={parent}
+          movesTo={movesTo}
+          buttonText={buttonText}
           style={style.button}
         />
-        {unavailableButton}
-        <DeleteButton
-          removeSalesperson={this.props.removeSalesperson}
-          toggleDeleteForm={this.toggleDeleteForm}
-          name={this.props.name}
-          id={this.props.id}
-          style={style.button}
-        />
-        {unavailableForm}
-        {unavailableReason}
-        {deleteForm}
+        {
+          parent !== 'unavailable' ? (
+            unavailableFormMounted ? (
+              <UnavailableForm
+                id={id}
+                moveToUnavailable={moveToUnavailable}
+                parent={parent}
+                toggleUnavailableForm={this.toggleUnavailableForm}
+                handleInput={handleInput}
+              />
+            ) : (
+              <UnavailableButton
+                toggleUnavailableForm={this.toggleUnavailableForm}
+                style={style.button}
+              />
+            )
+          ) : (
+            <p style={style.reason}>{unavailableReason}</p>
+          )
+        }
       </div>
     );
   }

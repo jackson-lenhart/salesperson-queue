@@ -13,8 +13,17 @@ class UnavailableForm extends React.Component {
   }
 
   clickWrapper() {
-    this.props.moveToUnavailable(this.props.id, this.props.from, this.state.currReason);
-    this.props.toggleUnavailableForm();
+    const {
+      id,
+      parent,
+      moveToUnavailable,
+      toggleUnavailableForm
+    } = this.props;
+
+    const { currReason } = this.state;
+
+    moveToUnavailable(id, parent, currReason);
+    toggleUnavailableForm();
   }
 
   cancel() {

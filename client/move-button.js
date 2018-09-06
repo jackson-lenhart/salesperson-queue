@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 class MoveButton extends React.Component {
   constructor() {
@@ -7,14 +7,26 @@ class MoveButton extends React.Component {
   }
 
   clickWrapper() {
-    this.props.moveSalesperson(this.props.id, this.props.from, this.props.to);
+    const {
+      moveSalesperson,
+      id,
+      parent,
+      movesTo
+    } = this.props;
+
+    moveSalesperson(id, parent, movesTo);
   }
 
   render() {
+    const {
+      style,
+      buttonText
+    } = this.props;
+
     return (
-      <span style={this.props.style}>
+      <span style={style}>
         <button onClick={this.clickWrapper}>
-          <strong>{this.props.msg}</strong>
+          <strong>{buttonText}</strong>
         </button>
       </span>
     );

@@ -1,27 +1,30 @@
-import React from "react";
+import React from 'react';
 
-import Customer from "./customer";
+import Customer from './customer';
 
 class Waiting extends React.Component {
   render() {
-    let waiting;
-    this.props.waiting.length === 0 ?
-      waiting = (
-        <p>None waiting.</p>
-      ) : waiting = this.props.waiting.map(x =>
-        <Customer
-          key={x.id}
-          id={x.id}
-          name={x.name}
-          salesperson={x.salesperson}
-          description={x.description}
-        />
-      );
+    const {
+      style,
+      waiting
+    } = this.props;
 
     return (
       <div>
-        <h3 style={this.props.style.header}>Waiting</h3>
-        {waiting}
+        <h3 style={style.header}>Waiting</h3>
+        {
+          waiting.length === 0 ? (
+            <p>None waiting.</p>
+          ) : waiting.map(x =>
+            <Customer
+              key={x.id}
+              id={x.id}
+              name={x.name}
+              salesperson={x.salesperson}
+              description={x.description}
+            />
+          )
+        }
       </div>
     );
   }
