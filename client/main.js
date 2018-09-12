@@ -1,18 +1,21 @@
-import React from "react";
-import { render } from "react-dom";
-import shortid from "shortid";
+import React from 'react';
+import { render } from 'react-dom';
+import shortid from 'shortid';
 
-import Available from "./available";
-import WithClient from "./with-client";
-import Unavailable from "./unavailable";
-import Waiting from "./waiting";
-import AddCustomerButton from "./add-customer-button";
-import AddCustomerForm from "./add-customer-form";
+import Available from './available';
+import WithClient from './with-client';
+import Unavailable from './unavailable';
+import Waiting from './waiting';
+import AddCustomerButton from './add-customer-button';
+import AddCustomerForm from './add-customer-form';
+
+import style from './style';
 
 class Main extends React.Component {
   constructor() {
     super();
     this.state = {
+      isError: false,
       isLoading: true,
       errorLoadingCalendars: false,
       available: [],
@@ -30,22 +33,27 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    fetch("/api/calendars")
-      .then(res => res.json())
-      .then(calendars => {
-        // if calendars is not an array, there's been an error with the request
-        if (!Array.isArray(calendars)) {
-          this.setState({
-            isLoading: false,
-            errorLoadingCalendars: true
-          });
-        } else {
-          this.setState({
-            isLoading: false,
-            available: calendars
-          });
-        }
-      }).catch(err => console.error(err));
+    fetch('/api/calendars')
+    .then(res => res.json())
+    .then(calendars => {
+      // if calendars is not an array, there's been an error with the request
+      if (!Array.isArray(calendars)) {
+        this.setState({
+          isLoading: false,
+          errorLoadingCalendars: true
+        });
+      } else {
+        this.setState({
+          isLoading: false,
+          available: calendars
+        });
+      }
+    }).catch(err => {
+      console.error(err)
+      this.setState({
+        isError: true
+      });
+    });
   }
 
   removeSalesperson(id, from) {
@@ -75,12 +83,13 @@ class Main extends React.Component {
     }));
   }
 
-  addCustomer({ name, salesperson, description }) {
+  addCustomer({ name, notes, salesperson, lookingFor }) {
     this.setState(prevState => ({
       waiting: prevState.waiting.concat({
         name,
+        notes,
         salesperson,
-        description,
+        lookingFor,
         id: shortid.generate()
       }),
       customerFormMounted: false
@@ -100,28 +109,8 @@ class Main extends React.Component {
   }
 
   render() {
-    const style = {
-      app: {
-        textAlign: "center"
-      },
-      item: {
-        padding: "10px"
-      },
-      table: {
-        padding: "20px"
-      },
-      header: {
-        textAlign: "center"
-      },
-      row: {
-        display: "flex"
-      },
-      column: {
-        flex: "50%"
-      }
-    };
-
     const {
+      isError,
       isLoading,
       customerFormMounted,
       waiting,
@@ -132,59 +121,73 @@ class Main extends React.Component {
 
     return (
       <div style={style.app}>
-        <h1 style={style.header}>Showroom Manager</h1>
+        <div style={style.header}>
+          <span style={style.headertext}>Showroom Manager</span>
+          <span style={style.nav}>This will be navigation stuffs!!</span>
+        </div>
         <div style={style.row}>
           <div style={style.column}>
-            <h2 style={style.header}>Customers</h2>
-            {
-              customerFormMounted ? (
-                <AddCustomerForm
-                  handleInput={this.handleInput}
-                  addCustomer={this.addCustomer}
-                  toggleCustomerForm={this.toggleCustomerForm}
-                />
-              ) : (
-                <AddCustomerButton toggleCustomerForm={this.toggleCustomerForm} />
-              )
-            }
+            <h2 style={style.subheader}>Customers</h2>
+            <div style={style.addcustomer}>
+              {
+                customerFormMounted ? (
+                  <AddCustomerForm
+                    handleInput={this.handleInput}
+                    addCustomer={this.addCustomer}
+                    toggleCustomerForm={this.toggleCustomerForm}
+                    style={style}
+                  />
+                ) : (
+                  <AddCustomerButton
+                    style={style}
+                    toggleCustomerForm={this.toggleCustomerForm}
+                  />
+                )
+              }
+            </div>
             <Waiting
-              waiting={this.state.waiting}
+              waiting={waiting}
               handleInput={this.handleInput}
               removeCustomer={this.removeCustomer}
+              moveSalesperson={this.moveSalesperson}
               style={style}
             />
           </div>
           <div style={style.column}>
-            <h2 style={style.header}>Salespeople</h2>
+            <h2 style={style.subheader}>Salespeople</h2>
             {
-              isLoading ? (
-                <p>Loading...</p>
+              isError ? (
+                <p style={style.error}>Error loading calendars</p>
               ) : (
-                <div>
-                  <Available
-                    available={available}
-                    moveSalesperson={this.moveSalesperson}
-                    removeSalesperson={this.removeSalesperson}
-                    moveToUnavailable={this.moveToUnavailable}
-                    handleInput={this.handleInput}
-                    style={style}
-                  />
-                  <WithClient
-                    withClient={withClient}
-                    moveSalesperson={this.moveSalesperson}
-                    removeSalesperson={this.removeSalesperson}
-                    moveToUnavailable={this.moveToUnavailable}
-                    handleInput={this.handleInput}
-                    style={style}
-                  />
-                  <Unavailable
-                    unavailable={unavailable}
-                    handleInput={this.handleInput}
-                    moveSalesperson={this.moveSalesperson}
-                    removeSalesperson={this.removeSalesperson}
-                    style={style}
-                  />
-                </div>
+                isLoading ? (
+                  <p>Loading...</p>
+                ) : (
+                  <div>
+                    <Available
+                      available={available}
+                      moveSalesperson={this.moveSalesperson}
+                      removeSalesperson={this.removeSalesperson}
+                      moveToUnavailable={this.moveToUnavailable}
+                      handleInput={this.handleInput}
+                      style={style}
+                    />
+                    <WithClient
+                      withClient={withClient}
+                      moveSalesperson={this.moveSalesperson}
+                      removeSalesperson={this.removeSalesperson}
+                      moveToUnavailable={this.moveToUnavailable}
+                      handleInput={this.handleInput}
+                      style={style}
+                    />
+                    <Unavailable
+                      unavailable={unavailable}
+                      handleInput={this.handleInput}
+                      moveSalesperson={this.moveSalesperson}
+                      removeSalesperson={this.removeSalesperson}
+                      style={style}
+                    />
+                  </div>
+                )
               )
             }
           </div>
@@ -196,5 +199,5 @@ class Main extends React.Component {
 
 render(
   <Main />,
-  document.getElementById("main")
+  document.getElementById('main')
 );

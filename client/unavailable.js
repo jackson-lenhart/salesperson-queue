@@ -13,8 +13,8 @@ class Unavailable extends React.Component {
     } = this.props;
 
     return (
-      <div style={style.table}>
-        <h3 style={style.header}>Unavailable</h3>
+      <div style={style.list}>
+        <h3>Unavailable</h3>
         {
           unavailable.length === 0 ? (
             <p>None unavailable.</p>

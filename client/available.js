@@ -14,8 +14,8 @@ class Available extends React.Component {
     } = this.props;
 
     return (
-      <div style={style.table}>
-        <h3 style={style.header}>Available</h3>
+      <div style={style.list}>
+        <h3>Available</h3>
         {
           available.length === 0 ? (
             <p>None available.</p>

@@ -1,4 +1,4 @@
-# Salesperson Queue
+# Showroom Manager
 
 Built using:
 * npm 5.8.0

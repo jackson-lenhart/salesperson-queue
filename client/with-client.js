@@ -14,8 +14,8 @@ class WithClient extends React.Component {
     } = this.props;
 
     return (
-      <div style={style.table}>
-        <h3 style={style.header}>With Client</h3>
+      <div style={style.list}>
+        <h3>With Client</h3>
         {
           withClient.length === 0 ? (
             <p>None with clients.</p>

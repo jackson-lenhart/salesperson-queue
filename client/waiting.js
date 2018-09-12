@@ -6,12 +6,13 @@ class Waiting extends React.Component {
   render() {
     const {
       style,
-      waiting
+      waiting,
+      moveSalesperson
     } = this.props;
 
     return (
-      <div>
-        <h3 style={style.header}>Waiting</h3>
+      <div style={style.list}>
+        <h3>Waiting</h3>
         {
           waiting.length === 0 ? (
             <p>None waiting.</p>
@@ -20,8 +21,10 @@ class Waiting extends React.Component {
               key={x.id}
               id={x.id}
               name={x.name}
+              notes={x.notes}
+              moveSalesperson={moveSalesperson}
               salesperson={x.salesperson}
-              description={x.description}
+              lookingFor={x.lookingFor}
             />
           )
         }

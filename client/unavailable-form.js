@@ -4,12 +4,13 @@ class UnavailableForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currReason: ""
-    };
+      currReason: '',
+      invalid: false
+    }
 
-    this.clickWrapper = this.clickWrapper.bind(this);
-    this.handleInput = props.handleInput.bind(this);
-    this.cancel = this.cancel.bind(this);
+    this.clickWrapper = this.clickWrapper.bind(this)
+    this.handleInput = props.handleInput.bind(this)
+    this.cancel = this.cancel.bind(this)
   }
 
   clickWrapper() {
@@ -18,21 +19,31 @@ class UnavailableForm extends React.Component {
       parent,
       moveToUnavailable,
       toggleUnavailableForm
-    } = this.props;
+    } = this.props
 
-    const { currReason } = this.state;
+    const { currReason } = this.state
 
-    moveToUnavailable(id, parent, currReason);
-    toggleUnavailableForm();
+    if (currReason.length === 0) {
+      this.setState({
+        invalid: true
+      })
+    } else {
+      moveToUnavailable(id, parent, currReason)
+      toggleUnavailableForm()
+    }
   }
 
   cancel() {
-    this.props.toggleUnavailableForm();
+    this.props.toggleUnavailableForm()
   }
 
   render() {
+    const { invalid } = this.state
+
     return (
-      <div>
+      <div style={{
+        paddingLeft: '20px'
+      }}>
         <p>Reason for Unavailability:</p>
         <input
           type="text"
@@ -43,8 +54,13 @@ class UnavailableForm extends React.Component {
           <strong>OK</strong>
         </button>
         <button onClick={this.cancel}>Cancel</button>
+        {
+          invalid ? (
+            <p style={{ color: 'red' }}>Reason cannot be blank</p>
+          ) : ''
+        }
       </div>
-    );
+    )
   }
 }
 

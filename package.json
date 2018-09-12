@@ -1,16 +1,17 @@
 {
-  "name": "salesperson-queue",
+  "name": "showroom-manager",
   "version": "1.0.0",
   "description": "to-do",
   "main": "main.js",
+  "proxy": "http://localhost:3000",
   "scripts": {
     "test": "test",
     "start": "webpack-dev-server",
-    "serve": "node server.js"
+    "serve": "nodemon --ignore client ./server.js --exec babel-node"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jackson-lenhart/salesperson-queue.git"
+    "url": "git+https://github.com/jackson-lenhart/showroom-manager.git"
   },
   "keywords": [
     "priority",
@@ -19,24 +20,28 @@
   "author": "jackson-lenhart",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jackson-lenhart/salesperson-queue/issues"
+    "url": "https://github.com/jackson-lenhart/showroom-manager/issues"
   },
-  "homepage": "https://github.com/jackson-lenhart/salesperson-queue",
+  "homepage": "https://github.com/jackson-lenhart/showroom-manager",
   "dependencies": {
     "acuityscheduling": "^0.1.7",
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
+    "ramda": "^0.25.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
     "shortid": "^2.2.8"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "dotenv": "^6.0.0",
     "html-webpack-plugin": "^3.2.0",
     "webpack": "^4.4.1",
     "webpack-cli": "^2.0.13",

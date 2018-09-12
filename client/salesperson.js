@@ -14,6 +14,7 @@ class Salesperson extends React.Component {
 
     this.toggleUnavailableForm = this.toggleUnavailableForm.bind(this);
     this.toggleDeleteForm = this.toggleDeleteForm.bind(this);
+    this.handleDragStart = this.handleDragStart.bind(this);
   }
 
   toggleUnavailableForm() {
@@ -28,16 +29,22 @@ class Salesperson extends React.Component {
     });
   }
 
+  handleDragStart(e) {
+    const { id } = this.props;
+    e.dataTransfer.setData('id', id);
+  }
+
   render() {
     const style = {
       name: {
-        padding: '10px'
+        padding: '10px',
+        cursor: 'pointer'
       },
       button: {
         padding: '5px'
       },
       reason: {
-        color: 'red'
+        paddingLeft: '10px'
       }
     };
 
@@ -61,7 +68,11 @@ class Salesperson extends React.Component {
 
     return (
       <div>
-        <span style={style.name}>{name}</span>
+        <span
+          style={style.name}
+          draggable="true"
+          onDragStart={this.handleDragStart}
+        >{name}</span>
         <MoveButton
           moveSalesperson={moveSalesperson}
           id={id}
@@ -87,7 +98,7 @@ class Salesperson extends React.Component {
               />
             )
           ) : (
-            <p style={style.reason}>{unavailableReason}</p>
+            <p style={style.reason}>Reason: {unavailableReason}</p>
           )
         }
       </div>
