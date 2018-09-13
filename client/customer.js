@@ -10,6 +10,8 @@ class Customer extends React.Component {
     this.toggleLookingFor = this.toggleLookingFor.bind(this);
     this.handleDrop = this.handleDrop.bind(this);
     this.handleDragOver = this.handleDragOver.bind(this);
+
+    this.customer = props.customer;
   }
 
   toggleLookingFor() {
@@ -23,8 +25,8 @@ class Customer extends React.Component {
   }
 
   handleDrop(e) {
-    const id = parseInt(e.dataTransfer.getData('id'), 10);
-    this.props.moveSalesperson(id, 'available', 'withClient');
+    const salespersonData = JSON.parse(e.dataTransfer.getData('salesperson'));
+    this.props.customerHelped(this.customer, salespersonData);
   }
 
   render() {
@@ -55,14 +57,8 @@ class Customer extends React.Component {
       }
     };
 
-    const { showLookingFor } = this.state;
-
-    const {
-      name,
-      notes,
-      salesperson,
-      lookingFor
-    } = this.props;
+    const customer = this.customer;
+    const showLookingFor = this.state.showLookingFor;
 
     return (
       <div
@@ -71,15 +67,15 @@ class Customer extends React.Component {
         onDrop={this.handleDrop}
       >
         <div style={style.inner}>
-          <h3>{name}</h3>
-          <p>{notes}</p>
+          <h3>{customer.name}</h3>
+          <p>{customer.notes}</p>
           {
-            salesperson ? (
-              <p style={style.salesperson}>{salesperson}</p>
+            customer.salesperson ? (
+              <p style={style.salesperson}>{customer.salesperson}</p>
             ) : ''
           }
           {
-            lookingFor ? (
+            customer.lookingFor ? (
               <div style={style.lookingFor}>
                 <span style={style.arrow} onClick={this.toggleLookingFor}>
                   {
@@ -89,7 +85,7 @@ class Customer extends React.Component {
                 <span>Looking for</span>
                 {
                   showLookingFor ? (
-                    <span style={style.hidden}>{lookingFor}</span>
+                    <span style={style.hidden}>{customer.lookingFor}</span>
                   ) : ''
                 }
               </div>

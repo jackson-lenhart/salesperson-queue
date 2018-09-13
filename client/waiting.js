@@ -7,7 +7,7 @@ class Waiting extends React.Component {
     const {
       style,
       waiting,
-      moveSalesperson
+      customerHelped
     } = this.props;
 
     return (
@@ -19,12 +19,8 @@ class Waiting extends React.Component {
           ) : waiting.map(x =>
             <Customer
               key={x.id}
-              id={x.id}
-              name={x.name}
-              notes={x.notes}
-              moveSalesperson={moveSalesperson}
-              salesperson={x.salesperson}
-              lookingFor={x.lookingFor}
+              customer={x}
+              customerHelped={customerHelped}
             />
           )
         }

@@ -30,8 +30,11 @@ class Salesperson extends React.Component {
   }
 
   handleDragStart(e) {
-    const { id } = this.props;
-    e.dataTransfer.setData('id', id);
+    const { id, parent } = this.props;
+    e.dataTransfer.setData('salesperson', JSON.stringify({
+      id,
+      parent
+    }));
   }
 
   render() {

@@ -17,7 +17,6 @@ class Main extends React.Component {
     this.state = {
       isError: false,
       isLoading: true,
-      errorLoadingCalendars: false,
       available: [],
       withClient: [],
       unavailable: [],
@@ -26,10 +25,15 @@ class Main extends React.Component {
     };
 
     this.addCustomer = this.addCustomer.bind(this);
+    this.customerHelped = this.customerHelped.bind(this);
+    this.removeCustomer = this.removeCustomer.bind(this);
     this.removeSalesperson = this.removeSalesperson.bind(this);
     this.moveSalesperson = this.moveSalesperson.bind(this);
     this.moveToUnavailable = this.moveToUnavailable.bind(this);
     this.toggleCustomerForm = this.toggleCustomerForm.bind(this);
+
+    // TODO
+    this.token = null;
   }
 
   componentDidMount() {
@@ -40,7 +44,7 @@ class Main extends React.Component {
       if (!Array.isArray(calendars)) {
         this.setState({
           isLoading: false,
-          errorLoadingCalendars: true
+          isError: true
         });
       } else {
         this.setState({
@@ -63,10 +67,12 @@ class Main extends React.Component {
   }
 
   moveSalesperson(id, from, to) {
-    this.setState(prevState => ({
-      [from]: prevState[from].filter(x => x.id !== id),
-      [to]: prevState[to].concat(prevState[from].find(x => x.id === id))
-    }));
+    if (from !== to) {
+      this.setState(prevState => ({
+        [from]: prevState[from].filter(x => x.id !== id),
+        [to]: prevState[to].concat(prevState[from].find(x => x.id === id))
+      }));
+    }
   }
 
   moveToUnavailable(id, from, reason) {
@@ -94,6 +100,41 @@ class Main extends React.Component {
       }),
       customerFormMounted: false
     }));
+  }
+
+  /*
+    this will take care of all the things when the customer is helped
+    including:
+    - sending customer and saleperson data to server
+    - removing customer in state
+    - moving salesperson to withClient in state
+  */
+  customerHelped(customer, salesperson) {
+    const { id, parent } = salesperson;
+
+    const options = {
+      headers: {
+        // TODO
+        'Authorization': 'Bearer ${this.token}',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        customer,
+        salespersonId: id
+      })
+    };
+
+    fetch('/api/customer-helped', options)
+    .then(res => {
+      if (res.ok) {
+        this.removeCustomer(customer.id);
+        this.moveSalesperson(id, parent, 'withClient')
+      } else {
+        // error handling here...
+        console.error(err);
+      }
+    });
   }
 
   removeCustomer(id) {
@@ -148,8 +189,7 @@ class Main extends React.Component {
             <Waiting
               waiting={waiting}
               handleInput={this.handleInput}
-              removeCustomer={this.removeCustomer}
-              moveSalesperson={this.moveSalesperson}
+              customerHelped={this.customerHelped}
               style={style}
             />
           </div>
