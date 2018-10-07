@@ -37,19 +37,35 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    fetch('/api/calendars')
-    .then(res => res.json())
-    .then(calendars => {
-      // if calendars is not an array, there's been an error with the request
-      if (!Array.isArray(calendars)) {
+
+    // Fetch endpoints to get all current visitors waiting and salespeople available
+    Promise.all([
+      fetch('/api/visitor').then(res => res.json()),
+      fetch('/api/salesperson').then(res => res.json())
+    ])
+    .then(([ visitors, salespeople ]) => {
+
+      // if either visitors or salespeople is not an array, there's been an error with the request
+      if (!Array.isArray(visitors) || !Array.isArray(salespeople)) {
         this.setState({
           isLoading: false,
           isError: true
         });
       } else {
+
+        // Stream setup
+        const stream = new EventSource('/api/visitor/observe');
+        stream.onmessage = event => {
+          const jsonString = event.data.replace('data: ', '').trim();
+          const latestVisitors = JSON.parse(jsonString);
+          this.setState({ waiting: latestVisitors });
+        };
+
+        // Setting state with what we got from 'fetchall' endpoints
         this.setState({
-          isLoading: false,
-          available: calendars
+          waiting: visitors,
+          available: salespeople,
+          isLoading: false
         });
       }
     }).catch(err => {

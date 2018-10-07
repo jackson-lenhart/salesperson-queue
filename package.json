@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "to-do",
   "main": "main.js",
-  "proxy": "http://localhost:3000",
   "scripts": {
     "test": "test",
     "start": "webpack-dev-server",
