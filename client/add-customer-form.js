@@ -8,10 +8,7 @@ class AddCustomerForm extends React.Component {
     super(props);
     this.state = {
       name: '',
-      notes: '',
-      salesperson: '',
-      lookingFor: '',
-      visited: false,
+      hasVisitedBefore: 0,
       invalid: false
     };
 
@@ -30,13 +27,13 @@ class AddCustomerForm extends React.Component {
         invalid: true
       });
     } else {
-      this.props.addCustomer(omit(['invalid'], this.state));
+      this.props.addCustomer(this.state);
     }
   }
 
   handleCheckbox(e) {
     this.setState({
-      visited: e.target.checked
+      hasVisitedBefore: e.target.checked ? 1 : 0
     });
   }
 
@@ -56,7 +53,7 @@ class AddCustomerForm extends React.Component {
       paddingLeft: '40px'
     };
 
-    const { visited, invalid } = this.state;
+    const { hasVisitedBefore, invalid } = this.state;
 
     return (
       <div style={style.form}>
@@ -72,28 +69,24 @@ class AddCustomerForm extends React.Component {
             />
           </div>
           <div>
-            <label style={style.label} htmlFor="visited">Visited before?</label>
+            <label style={style.label} htmlFor="hasVisitedBefore">Visited before?</label>
             <input
               style={style.checkbox}
               type="checkbox"
-              name="visited"
+              name="hasVisitedBefore"
               onChange={this.handleCheckbox}
             />
           </div>
-          {
-            visited ? (
-              <div>
-                <label style={style.label} htmlFor="salesperson">Salesperson:</label>
-                <input
-                  style={style.input}
-                  placeholder="Salesperson"
-                  type="text"
-                  name="salesperson"
-                  onChange={this.handleInput}
-                />
-              </div>
-            ) : ''
-          }
+          <div>
+            <label style={style.label} htmlFor="salespersonId">Salesperson:</label>
+            <input
+              style={style.input}
+              placeholder="Salesperson"
+              type="text"
+              name="salespersonId"
+              onChange={this.handleInput}
+            />
+          </div>
           <div>
             <label style={style.label} htmlFor="notes">Notes:</label>
             <input

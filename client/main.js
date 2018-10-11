@@ -17,11 +17,13 @@ class Main extends React.Component {
     this.state = {
       isError: false,
       isLoading: true,
+      salespersonIds: [],
       available: [],
       withClient: [],
       unavailable: [],
       waiting: [],
-      customerFormMounted: false
+      customerFormMounted: false,
+      customerFormErrorMsg: ''
     };
 
     this.addCustomer = this.addCustomer.bind(this);
@@ -63,6 +65,7 @@ class Main extends React.Component {
 
         // Setting state with what we got from 'fetchall' endpoints
         this.setState({
+          salespersonIds: salespeople.map(s => s.id),
           waiting: visitors,
           available: salespeople,
           isLoading: false
@@ -105,17 +108,44 @@ class Main extends React.Component {
     }));
   }
 
-  addCustomer({ name, notes, salesperson, lookingFor }) {
-    this.setState(prevState => ({
-      waiting: prevState.waiting.concat({
-        name,
-        notes,
-        salesperson,
-        lookingFor,
-        id: shortid.generate()
-      }),
-      customerFormMounted: false
-    }));
+  addCustomer({ name, hasVisitedBefore, salespersonId, notes, lookingFor }) {
+    const { salespersonIds } = this.state;
+
+    const visitor = {
+      name,
+      hasVisitedBefore,
+      isWaiting: 1
+    };
+
+    // Nullable fields
+    if (salespersonId) {
+      const idAsInt = parseInt(salespersonId, 10);
+      if (salespersonIds.some(x => x === idAsInt)) {
+        visitor.salespersonId = idAsInt;
+      } else {
+        this.setState({
+          customerFormErrorMsg: `Could not find salesperson with id ${salespersonId}`
+        });
+      }
+    }
+    if (notes) {
+      visitor.notes = notes;
+    }
+    if (lookingFor) {
+      visitor.lookingFor = lookingFor;
+    }
+
+    const options = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify(visitor)
+    };
+
+    fetch('/api/visitor/add', options)
+    .then(res => res.text())
+    .then(msg => console.log(msg));
   }
 
   /*
@@ -148,7 +178,6 @@ class Main extends React.Component {
         this.moveSalesperson(id, parent, 'withClient')
       } else {
         // error handling here...
-        console.error(err);
       }
     });
   }
@@ -173,7 +202,8 @@ class Main extends React.Component {
       waiting,
       available,
       withClient,
-      unavailable
+      unavailable,
+      customerFormErrorMsg
     } = this.state;
 
     return (
@@ -201,6 +231,9 @@ class Main extends React.Component {
                   />
                 )
               }
+              {customerFormErrorMsg ? (
+                <p style={{ color: 'red' }}>{customerFormErrorMsg}</p>
+              ) : ''}
             </div>
             <Waiting
               waiting={waiting}
