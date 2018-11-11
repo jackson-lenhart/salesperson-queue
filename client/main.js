@@ -47,6 +47,8 @@ class Main extends React.Component {
     ])
     .then(([ visitors, salespeople ]) => {
 
+      console.log(visitors);
+
       // if either visitors or salespeople is not an array, there's been an error with the request
       if (!Array.isArray(visitors) || !Array.isArray(salespeople)) {
         this.setState({
@@ -71,7 +73,8 @@ class Main extends React.Component {
           isLoading: false
         });
       }
-    }).catch(err => {
+    })
+    .catch(err => {
       console.error(err)
       this.setState({
         isError: true
@@ -114,7 +117,9 @@ class Main extends React.Component {
     const visitor = {
       name,
       hasVisitedBefore,
-      isWaiting: 1
+      isWaiting: 1,
+      // Seconds since Unix epoch
+      signedInTimestamp: Math.round(Date.now() / 1000)
     };
 
     // Nullable fields
@@ -145,7 +150,12 @@ class Main extends React.Component {
 
     fetch('/api/visitor/add', options)
     .then(res => res.text())
-    .then(msg => console.log(msg));
+    .then(msg => {
+      console.log(msg);
+      this.setState({
+        customerFormMounted: false
+      });
+    });
   }
 
   /*
