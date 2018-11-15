@@ -7,8 +7,11 @@ class Waiting extends React.Component {
     const {
       style,
       waiting,
+      salespeople,
       customerHelped
     } = this.props;
+
+    console.log(waiting);
 
     return (
       <div style={style.list}>
@@ -20,6 +23,7 @@ class Waiting extends React.Component {
             <Customer
               key={x.id}
               customer={x}
+              salesperson={salespeople.find(y => y.id === x.salespersonId)}
               customerHelped={customerHelped}
             />
           )

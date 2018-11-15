@@ -9,7 +9,7 @@ class AddCustomerForm extends React.Component {
     this.state = {
       name: '',
       hasVisitedBefore: 0,
-      invalid: false
+      errorMsg: ''
     };
 
     this.handleInput = props.handleInput.bind(this);
@@ -20,14 +20,29 @@ class AddCustomerForm extends React.Component {
 
   clickWrapper(e) {
     e.preventDefault();
+    
+    const { salespeople } = this.props;
+    const { name, salespersonId } = this.state;
 
-    const { name } = this.state;
-    if (name.length === 0) {
+    if (!name) {
       this.setState({
-        invalid: true
+        errorMsg: 'Name cannot be blank'
       });
-    } else {
+    }
+    else if (
+      salespersonId
+      && !this.props.salespeople.some(s => s.id === parseInt(salespersonId, 10))
+    ) {
+      this.setState({
+        errorMsg: `Salesperson with id ${salespersonId} cannot be found`
+      });
+    }
+    else {
       this.props.addCustomer(this.state);
+      this.setState({
+        nameError: false,
+        salespersonError: false
+      })
     }
   }
 
@@ -43,6 +58,7 @@ class AddCustomerForm extends React.Component {
 
   render() {
     const { style } = this.props;
+
     style.buttonGroup = {
       paddingTop: '8px',
       paddingLeft: '40px'
@@ -53,7 +69,11 @@ class AddCustomerForm extends React.Component {
       paddingLeft: '40px'
     };
 
-    const { hasVisitedBefore, invalid } = this.state;
+    const {
+      hasVisitedBefore,
+      salespersonId,
+      errorMsg
+    } = this.state;
 
     return (
       <div style={style.form}>
@@ -107,11 +127,7 @@ class AddCustomerForm extends React.Component {
               onChange={this.handleInput}
             />
           </div>
-          {
-            invalid ? (
-              <p style={style.invalid}>Name cannot be blank</p>
-            ) : ''
-          }
+          <p style={style.invalid}>{errorMsg}</p>
           <div style={style.buttonGroup}>
             <button style={style.button} type="submit">Add To List</button>
             <button style={style.button} type="button" onClick={this.cancel}>Cancel</button>

@@ -12,6 +12,7 @@ class Customer extends React.Component {
     this.handleDragOver = this.handleDragOver.bind(this);
 
     this.customer = props.customer;
+    this.salesperson = props.salesperson;
   }
 
   toggleLookingFor() {
@@ -59,6 +60,7 @@ class Customer extends React.Component {
 
     const customer = this.customer;
     const showLookingFor = this.state.showLookingFor;
+    const salesperson = this.salesperson;
 
     return (
       <div
@@ -66,12 +68,12 @@ class Customer extends React.Component {
         onDragOver={this.handleDragOver}
         onDrop={this.handleDrop}
       >
-        <div style={style.inner}>
+        <div>
           <h3>{customer.name}</h3>
           <p>{customer.notes}</p>
           {
-            customer.salesperson ? (
-              <p style={style.salesperson}>{customer.salesperson}</p>
+            salesperson ? (
+              <p style={style.salesperson}>{salesperson.name}</p>
             ) : ''
           }
           {

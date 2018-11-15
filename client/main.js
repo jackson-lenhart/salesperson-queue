@@ -17,13 +17,14 @@ class Main extends React.Component {
     this.state = {
       isError: false,
       isLoading: true,
-      salespersonIds: [],
+      salespeople: [],
       available: [],
       withClient: [],
       unavailable: [],
       waiting: [],
       customerFormMounted: false,
-      customerFormErrorMsg: ''
+      customerFormErrorMsg: '',
+      customerHelpedErrorMsg: ''
     };
 
     this.addCustomer = this.addCustomer.bind(this);
@@ -33,9 +34,6 @@ class Main extends React.Component {
     this.moveSalesperson = this.moveSalesperson.bind(this);
     this.moveToUnavailable = this.moveToUnavailable.bind(this);
     this.toggleCustomerForm = this.toggleCustomerForm.bind(this);
-
-    // TODO
-    this.token = null;
   }
 
   componentDidMount() {
@@ -67,7 +65,7 @@ class Main extends React.Component {
 
         // Setting state with what we got from 'fetchall' endpoints
         this.setState({
-          salespersonIds: salespeople.map(s => s.id),
+          salespeople,
           waiting: visitors,
           available: salespeople,
           isLoading: false
@@ -112,7 +110,7 @@ class Main extends React.Component {
   }
 
   addCustomer({ name, hasVisitedBefore, salespersonId, notes, lookingFor }) {
-    const { salespersonIds } = this.state;
+    const { salespeople } = this.state;
 
     const visitor = {
       name,
@@ -125,7 +123,7 @@ class Main extends React.Component {
     // Nullable fields
     if (salespersonId) {
       const idAsInt = parseInt(salespersonId, 10);
-      if (salespersonIds.some(x => x === idAsInt)) {
+      if (salespeople.some(x => x.id === idAsInt)) {
         visitor.salespersonId = idAsInt;
       } else {
         this.setState({
@@ -153,7 +151,8 @@ class Main extends React.Component {
     .then(msg => {
       console.log(msg);
       this.setState({
-        customerFormMounted: false
+        customerFormMounted: false,
+        customerFormErrorMsg: ''
       });
     });
   }
@@ -170,8 +169,6 @@ class Main extends React.Component {
 
     const options = {
       headers: {
-        // TODO
-        'Authorization': 'Bearer ${this.token}',
         'Content-Type': 'application/json'
       },
       method: 'POST',
@@ -181,13 +178,20 @@ class Main extends React.Component {
       })
     };
 
-    fetch('/api/customer-helped', options)
+    fetch('/api/statistics/helped', options)
     .then(res => {
       if (res.ok) {
         this.removeCustomer(customer.id);
         this.moveSalesperson(id, parent, 'withClient')
+        this.setState({
+          customerHelpedErrorMsg: ''
+        });
       } else {
         // error handling here...
+        this.setState({
+          customerHelpedErrorMsg: 'Could not process \'helped\' action'
+        });
+        console.error(res.status);
       }
     });
   }
@@ -208,12 +212,14 @@ class Main extends React.Component {
     const {
       isError,
       isLoading,
+      salespeople,
       customerFormMounted,
       waiting,
       available,
       withClient,
       unavailable,
-      customerFormErrorMsg
+      customerFormErrorMsg,
+      customerHelpedErrorMsg
     } = this.state;
 
     return (
@@ -232,6 +238,7 @@ class Main extends React.Component {
                     handleInput={this.handleInput}
                     addCustomer={this.addCustomer}
                     toggleCustomerForm={this.toggleCustomerForm}
+                    salespeople={salespeople}
                     style={style}
                   />
                 ) : (
@@ -245,8 +252,10 @@ class Main extends React.Component {
                 <p style={{ color: 'red' }}>{customerFormErrorMsg}</p>
               ) : ''}
             </div>
+            <p style={{ color: 'red' }}>{customerHelpedErrorMsg}</p>
             <Waiting
               waiting={waiting}
+              salespeople={salespeople}
               handleInput={this.handleInput}
               customerHelped={this.customerHelped}
               style={style}
