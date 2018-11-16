@@ -1,10 +1,13 @@
 import React from 'react';
 
+import { formatWaitedSeconds, calculateWaitedSeconds } from './utils';
+
 class Customer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showLookingFor: false
+      showLookingFor: false,
+      waitedSeconds: calculateWaitedSeconds(props.customer.signed_in_timestamp)
     };
 
     this.toggleLookingFor = this.toggleLookingFor.bind(this);
@@ -15,10 +18,29 @@ class Customer extends React.Component {
     this.salesperson = props.salesperson;
   }
 
+  componentDidMount() {
+    console.log(this.state.waitedSeconds);
+    this.interval = setInterval(() => {
+      this.setState({
+        waitedSeconds: calculateWaitedSeconds(this.customer.signed_in_timestamp)
+      });
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   toggleLookingFor() {
     this.setState(prevState => ({
       showLookingFor: !prevState.showLookingFor
     }));
+  }
+
+  calculateWaitedSeconds() {
+    const currentSeconds = Math.floor(Date.now() / 1000);
+    const waitedSeconds = currentSeconds - this.customer.signed_in_timestamp;
+    return waitedSeconds;
   }
 
   handleDragOver(e) {
@@ -37,6 +59,10 @@ class Customer extends React.Component {
         border: '1px solid',
         padding: '10px',
         height: '100px'
+      },
+      column: {
+        float: 'left',
+        width: '25%'
       },
       salesperson: {
         position: 'absolute',
@@ -58,8 +84,9 @@ class Customer extends React.Component {
       }
     };
 
+    const { waitedSeconds, showLookingFor } = this.state;
+
     const customer = this.customer;
-    const showLookingFor = this.state.showLookingFor;
     const salesperson = this.salesperson;
 
     return (
@@ -68,14 +95,18 @@ class Customer extends React.Component {
         onDragOver={this.handleDragOver}
         onDrop={this.handleDrop}
       >
-        <div>
+        <div style={style.column}>
           <h3>{customer.name}</h3>
           <p>{customer.notes}</p>
+        </div>
+        <div style={style.column}>
           {
             salesperson ? (
               <p style={style.salesperson}>{salesperson.name}</p>
             ) : ''
           }
+        </div>
+        <div style={style.column}>
           {
             customer.lookingFor ? (
               <div style={style.lookingFor}>
@@ -93,6 +124,9 @@ class Customer extends React.Component {
               </div>
             ) : ''
           }
+        </div>
+        <div style={style.column}>
+          <h1>{formatWaitedSeconds(waitedSeconds)}</h1>
         </div>
       </div>
     );
