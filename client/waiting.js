@@ -11,8 +11,6 @@ class Waiting extends React.Component {
       customerHelped
     } = this.props;
 
-    console.log(waiting);
-
     return (
       <div style={style.list}>
         <h3>Waiting</h3>

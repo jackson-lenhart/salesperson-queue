@@ -11,12 +11,12 @@ export function nameToLabel(name) {
 }
 
 export function calculateWaitedSeconds(signedIn) {
-  const currentSeconds = Math.floor(Date.now() / 1000);
+  const currentSeconds = Math.round(Date.now() / 1000);
   return currentSeconds - signedIn;
 }
 
 export function formatWaitedSeconds(waitedSeconds) {
   const minutes = Math.floor(waitedSeconds / 60);
   const seconds = waitedSeconds % 60;
-  return `${minutes}:${seconds}`;
+  return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
 }

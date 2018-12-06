@@ -45,8 +45,6 @@ class Main extends React.Component {
     ])
     .then(([ visitors, salespeople ]) => {
 
-      console.log(visitors);
-
       // if either visitors or salespeople is not an array, there's been an error with the request
       if (!Array.isArray(visitors) || !Array.isArray(salespeople)) {
         this.setState({
@@ -149,7 +147,6 @@ class Main extends React.Component {
     fetch('/api/visitor/add', options)
     .then(res => res.text())
     .then(msg => {
-      console.log(msg);
       this.setState({
         customerFormMounted: false,
         customerFormErrorMsg: ''

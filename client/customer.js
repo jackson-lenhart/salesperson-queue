@@ -19,7 +19,6 @@ class Customer extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.state.waitedSeconds);
     this.interval = setInterval(() => {
       this.setState({
         waitedSeconds: calculateWaitedSeconds(this.customer.signed_in_timestamp)
